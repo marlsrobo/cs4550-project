@@ -1,10 +1,26 @@
 import NavigationSidebar from "../NavigationSidebar";
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
 const SearchScreen = () => {
     const [results, setResults] = useState([]);
     const searchRef = useRef();
+
+    const clientID = "bdf7e69e81d74af595db40041ea8f146";
+    const clientSecret = "631a50bd9a064799b670a8fbba47e625";
+    const baseURL = "https://api.spotify.com/v1";
+    const authURL = "https://accounts.spotify.com/api/token";
+
+    const getAPIToken = async () => {
+        const response = await axios.post(authURL, {
+            'grant_type': 'client_credentials',
+            'client_id': clientID,
+            'client_secret': clientSecret
+        })
+        console.log(response.data);
+    }
+
+
 
     const search = async (api_url) => {
         const searchKey = searchRef.current.value;
