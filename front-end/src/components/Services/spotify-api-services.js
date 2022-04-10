@@ -20,32 +20,34 @@ const getAuth = async () => {
         })
         //return access token
         return response.data.access_token;
-        console.log(response.data.access_token);
     }catch(error){
         //on fail, log the error in console
         console.log(error);
     }
 }
 
-export const findArtistsQuery = async (query) => {
+export const performSearch = async (query, qType) => {
     //request token using getAuth() function
     const access_token = await getAuth();
 
-    const api_url = `https://api.spotify.com/v1/search?type=artist&q=${query}`;
-    //console.log(api_url);
+    const api_url = `https://api.spotify.com/v1/search?type=${qType}&q=${query}`;
+    console.log(api_url);
     try{
         const response = await axios.get(api_url, {
             headers: {
                 'Authorization': `Bearer ${access_token}`
             }
         });
-        console.log(response.data.artists.items);
-        return response.data.artists.items;
+        switch (qType) {
+            case "album":
+                return response.data.albums.items;
+            case "artist":
+                return response.data.artists.items;
+            default:
+                console.log("not an album or artist");
+
+        }
     }catch(error){
         console.log(error);
     }
-};
-
-export const findTracksQuery = async (query) => {
-
 };

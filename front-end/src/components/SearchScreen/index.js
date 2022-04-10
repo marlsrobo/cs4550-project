@@ -1,26 +1,31 @@
 import NavigationSidebar from "../NavigationSidebar";
-import React, {useEffect, useRef, useState} from "react";
-import {findArtistsQuery} from "../Services/spotify-api-services";
+import React, {useRef, useState} from "react";
+import {performSearch} from "../Services/spotify-api-services";
 import ArtistSearchSummary from "./ArtistSearchSummary";
+import AlbumSearchSummary from "./AlbumSearchSummary";
 
 const SearchScreen = () => {
     const [results, setResults] = useState([]);
     const searchRef = useRef();
 
-    let searchBy = "artist";
-
-    // let searchBy = document.getElementById("searchByDropdown");
+    const formatSearch = (resultObject) => {
+        if (getSelectedSearchBy() === "artist") {
+            return <ArtistSearchSummary artist={resultObject}/>
+        }
+        else if (getSelectedSearchBy() === "album") {
+            return <AlbumSearchSummary album={resultObject}/>
+        }
+    }
 
     const search = async () => {
         const searchKey = searchRef.current.value;
-        const response = await findArtistsQuery(searchKey);
+        const response = await performSearch(searchKey, getSelectedSearchBy());
         setResults(response);
     };
 
     const getSelectedSearchBy = () => {
         var selectElement = document.querySelector('#searchByDropdown');
-        var output = selectElement.value;
-        searchBy = output;
+        return selectElement.value;
     }
 
     return(
@@ -34,10 +39,10 @@ const SearchScreen = () => {
             <div className="col-10 col-lg-11 col-xl-10 mt-3">
                 <div className="row mt-2">
                     <div className="col-2">
-                        <select id="searchByDropdown" defaultValue="artist" className="form-select" style={{"height": "40px"}}
-                        onChange={getSelectedSearchBy}>
+                        <select id="searchByDropdown" className="form-select" style={{"height": "40px"}}
+                        >
                             <option value="artist">Artist</option>
-                            <option value="track">Song</option>
+                            <option value="album">Album</option>
                             <option value="user">User</option>
                         </select>
                     </div>
@@ -56,8 +61,9 @@ const SearchScreen = () => {
                     </div>
                 </div>
                 <ul className="list-group mt-3">
+
                     {
-                        results.map(artist => <ArtistSearchSummary artist={artist}/>)
+                        results.map(result => formatSearch(result))
                     }
 
                 </ul>
