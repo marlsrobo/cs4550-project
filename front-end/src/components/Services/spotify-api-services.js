@@ -24,7 +24,7 @@ const getAuth = async () => {
         //on fail, log the error in console
         console.log(error);
     }
-}
+};
 
 export const performSearch = async (query, qType) => {
     //request token using getAuth() function
@@ -40,6 +40,7 @@ export const performSearch = async (query, qType) => {
         });
         switch (qType) {
             case "album":
+                console.log(response.data.albums.items);
                 return response.data.albums.items;
             case "artist":
                 return response.data.artists.items;
@@ -47,6 +48,25 @@ export const performSearch = async (query, qType) => {
                 console.log("not an album or artist");
 
         }
+    }catch(error){
+        console.log(error);
+    }
+};
+
+export const fetchAlbumByIdFromSpotify = async (albumId) => {
+    const access_token = await getAuth();
+
+    const api_url = `https://api.spotify.com/v1/albums/${albumId}`;
+    console.log(api_url);
+    try{
+        const response = await axios.get(api_url, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`
+            }
+        });
+        // console.log(response.data);
+        // console.log(response.data);
+        return response;
     }catch(error){
         console.log(error);
     }

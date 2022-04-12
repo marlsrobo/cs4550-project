@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom";
+
 const AlbumSearchSummary = (album) => {
 
     const formatArtists = (artists) => {
@@ -41,6 +43,11 @@ const AlbumSearchSummary = (album) => {
                 <br/>
                 <br/>
                 <a href={album.album.external_urls.spotify} target="_blank">Listen on Spotify</a>
+            </div>
+            <div className="float-end">
+                <Link to={`/album/details/${album.album.id}`}>
+                    <button className="btn btn-secondary">Click for more details</button>
+                </Link>
             </div>
 
         </li>

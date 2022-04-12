@@ -7,6 +7,8 @@ import HomeScreen from "./components/HomeScreen";
 import ProfileScreen from "./components/ProfileScreen";
 import LoginScreen from "./components/LoginScreen";
 import SearchScreen from "./components/SearchScreen";
+import AlbumDetailsScreen from "./components/SearchScreen/AlbumDetailsScreen";
+import ArtistDetailsScreen from "./components/SearchScreen/ArtistDetailsScreen";
 
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 
@@ -20,6 +22,8 @@ function App() {
                     <Route path="profile" element={<ProfileScreen/>}/>
                     <Route path="login" element={<LoginScreen/>}/>
                     <Route path="search" element={<SearchScreen/>}/>
+                    <Route path="album/details/:albumId" element={<AlbumDetailsScreen/>}/>
+                    <Route path="artist/details/:artistId" element={<ArtistDetailsScreen/>}/>
                 </Route>
             </Routes>
         </div>
