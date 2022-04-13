@@ -38,6 +38,15 @@ const AlbumDetailsScreen = () => {
         }
     }
 
+    const getArtists = (album) => {
+        try {
+            return <h2>{album.artists[0].name}</h2>
+        }
+        catch (Exception) {
+            return <h2>hi</h2>
+        }
+    }
+
     useEffect(() => {
         getAlbumDetails().then(album => setAlbumDetails(album));
         // setAlbumDetails(getAlbumDetails());
@@ -51,7 +60,8 @@ const AlbumDetailsScreen = () => {
             </div>
             <div className="col-10 col-lg-11 col-xl-10 mt-3">
                 <h1>{albumDetails.name}</h1>
-                <h2>{albumDetails.artists[0].name}</h2>
+                {getArtists(albumDetails)}
+                {/*<h2>{albumDetails.images[0].url}</h2>*/}
                 {/*<h2>{formatArtists(albumDetails.artists)}</h2>*/}
                 {/*<h2>{albumDetails.artists[0].name}</h2>*/}
                 <h2>{JSON.stringify(albumDetails.artists)}</h2>
