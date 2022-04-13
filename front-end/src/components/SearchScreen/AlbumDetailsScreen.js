@@ -71,7 +71,7 @@ const AlbumDetailsScreen = () => {
     const formatAlbumLinkToSpotify = (album) => {
         try {
             return (
-                <a href={album.external_urls.spotify} target="_blank"><img src="/images/Spotify_icon.png" className="float-end" height="100px"/></a>
+                <a href={album.external_urls.spotify} target="_blank"><img src="/images/Spotify_icon.png" className="float-end ps-5" height="100px"/></a>
             );
 
         } catch (Exception) { }
