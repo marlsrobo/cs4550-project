@@ -7,9 +7,14 @@ const AlbumDetailsScreen = () => {
 
     const {albumId} = useParams();
     const [albumDetails, setAlbumDetails] = useState({});
-    const getAlbumDetails = () => {
-      fetchAlbumByIdFromSpotify(albumId).then(album => setAlbumDetails(album.data));
-      console.log(albumDetails);
+    const getAlbumDetails = async () => {
+        let details = await fetchAlbumByIdFromSpotify(albumId);
+
+        console.log(details);
+        return details.data;
+        // setAlbumDetails(details.data);
+        // console.log(details.data);
+      // console.log(albumDetails);
     };
 
     const formatArtists = (artists) => {
@@ -34,15 +39,8 @@ const AlbumDetailsScreen = () => {
     }
 
     useEffect(() => {
-        const getAlbumAPIData = async () => {
-            const album = await fetchAlbumByIdFromSpotify(albumId);
-            setAlbumDetails(album.data);
-            console.log(album.data);
-        };
-
-        getAlbumAPIData().catch(console.error);
-        getAlbumAPIData().catch(console.error);
-
+        getAlbumDetails().then(album => setAlbumDetails(album));
+        // setAlbumDetails(getAlbumDetails());
         console.log(albumDetails);
     }, []);
     return(
@@ -53,13 +51,11 @@ const AlbumDetailsScreen = () => {
             </div>
             <div className="col-10 col-lg-11 col-xl-10 mt-3">
                 <h1>{albumDetails.name}</h1>
-?                {/*<h2>{albumDetails.artists[0].name}</h2>*/}
+                <h2>{albumDetails.artists[0].name}</h2>
                 {/*<h2>{formatArtists(albumDetails.artists)}</h2>*/}
                 {/*<h2>{albumDetails.artists[0].name}</h2>*/}
-                {/*<h2>{JSON.stringify(albumDetails.artists[0].name)}</h2>*/}
+                <h2>{JSON.stringify(albumDetails.artists)}</h2>
                 {getImage(albumDetails)}
-
-                    {/*{JSON.stringify(albumDetails)}*/}
 
 
             </div>
