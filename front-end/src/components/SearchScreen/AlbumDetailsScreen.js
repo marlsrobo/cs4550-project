@@ -13,14 +13,13 @@ const AlbumDetailsScreen = () => {
         return details.data;
         // setAlbumDetails(details.data);
         // console.log(details.data);
-      // console.log(albumDetails);
+        // console.log(albumDetails);
     };
 
     const getImage = (album) => {
         try {
             return <img id="albumImg" src={album.images[0].url} className="me-3" height="400px"/>
-        }
-        catch (Exception) {
+        } catch (Exception) {
             return <img id="albumImg" src="/images/blankProfile.png" className=" me-3"/>
         }
     };
@@ -28,8 +27,7 @@ const AlbumDetailsScreen = () => {
     const getArtists = (album) => {
         try {
             return <h3><Link to={`/artist/details/${album.artists[0].id}`}>{album.artists[0].name}</Link></h3>
-        }
-        catch (Exception) {
+        } catch (Exception) {
         }
     };
 
@@ -40,22 +38,23 @@ const AlbumDetailsScreen = () => {
     }
 
     const formatTrack = (track) => {
-        return(
-          <li className="list-group-item">
+        return (
+            <li className="list-group-item">
               <span className="float-start">
-                  {track.track_number}. {track.name} <span style={{"color": "red"}}>{track.explicit && "EXPLICIT"}</span>
+                  {track.track_number}. {track.name} <span
+                  style={{"color": "red"}}>{track.explicit && "EXPLICIT"}</span>
               </span>
-              <span className="float-end">
+                <span className="float-end">
                   {millisToMinutesAndSeconds(track.duration_ms)}
               </span>
-          </li>
+            </li>
         );
     };
 
     const formatTracks = (album) => {
         try {
             console.log(album.tracks.items);
-            return(
+            return (
                 <ul className="list-group">
 
                     {
@@ -71,10 +70,13 @@ const AlbumDetailsScreen = () => {
     const formatAlbumLinkToSpotify = (album) => {
         try {
             return (
-                <a href={album.external_urls.spotify} target="_blank"><img src="/images/Spotify_icon.png" className="float-end ps-5" height="100px"/></a>
+                <a href={album.external_urls.spotify} target="_blank"><img src="/images/Spotify_icon.png"
+                                                                           className="float-end ps-5"
+                                                                           height="100px"/></a>
             );
 
-        } catch (Exception) { }
+        } catch (Exception) {
+        }
     };
 
     useEffect(() => {
@@ -82,30 +84,37 @@ const AlbumDetailsScreen = () => {
         // setAlbumDetails(getAlbumDetails());
         console.log(albumDetails);
     }, []);
-    return(
-        <div className="row mt-2">
+    return (
+        <div className="row mt-2 mb-4">
             <h1>Album Details Screen</h1>
             <div className="col-2 col-lg-1 col-xl-2">
                 <NavigationSidebar active="search"/>
             </div>
-            <div className="col-10 col-lg-11 col-xl-10 mt-3">
-                <div className="float-start">
+            <div className="col-10 col-lg-11 col-xl-10 mt-3 row">
+                <div className="col-12 col-lg-6 col-xxl-5">
                     {getImage(albumDetails)}
                     <br/>
-                    <button className="mt-3 me-3 btn btn-success"><i className="far fa-thumbs-up me-1 wd-14px-font wd-gray-color"></i></button>
-                    <button className="mt-3 btn btn-danger"><i className="far fa-thumbs-down me-1 wd-14px-font wd-gray-color"></i></button>
+                    <button className="mt-3 me-3 btn btn-success">
+                        <i className="far fa-thumbs-up me-1 wd-14px-font wd-gray-color"/>
+                    </button>
+                    <button className="mt-3 btn btn-danger">
+                        <i className="far fa-thumbs-down me-1 wd-14px-font wd-gray-color"/>
+                    </button>
                     <br/>
-                    <textarea className="mt-3 form-control me-2" placeholder="Leave a review" style={{"width": "400px"}}></textarea>
-                    <button className="mt-3 btn btn-secondary">Submit</button>
-
+                    <textarea className="mt-3 form-control me-2" placeholder="Leave a review"
+                              style={{"width": "400px"}}/>
+                    <button className="mt-3 mb-4 btn btn-secondary">Submit</button>
+                    <h4>Reviews</h4>
                 </div>
-                <div>
-                    {formatAlbumLinkToSpotify(albumDetails)}
-                    <h1>{albumDetails.name}</h1>
+                <div className="col-12 col-lg-6 col-xxl-7">
+                    <div>
+                        {formatAlbumLinkToSpotify(albumDetails)}
+                        <h1>{albumDetails.name}</h1>
+                    </div>
+                    {getArtists(albumDetails)}
+                    <br/>
+                    {formatTracks(albumDetails)}
                 </div>
-                {getArtists(albumDetails)}
-                <br/>
-                {formatTracks(albumDetails)}
             </div>
         </div>
     );

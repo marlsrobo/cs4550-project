@@ -42,14 +42,6 @@ const ArtistDetailsScreen = () => {
         }
     };
 
-    useEffect(() => {
-        getArtistDetails().then(artist => setArtistDetails(artist));
-        getArtistAlbums().then(albums => setArtistAlbums(albums));
-        // setartistDetails(getArtistDetails());
-        console.log(artistDetails);
-        console.log(artistAlbums);
-    }, []);
-
     const getFollowers = (artist) => {
         try {
             return <h5>{artist.followers.total.toLocaleString("en-US")} listeners</h5>;
@@ -60,7 +52,7 @@ const ArtistDetailsScreen = () => {
 
     const formatAlbum = (album) => {
         return (
-            <div className="col mb-4 me-4">
+            <div className="col pb-4">
                 <h5>{album.name}</h5>
                 <h6>{album.release_date.slice(0, 4)} ∙ {album.album_type} ∙ {album.total_tracks} songs</h6>
                 <Link to={`/album/details/${album.id}`}>{getImage(album, "200px")}</Link>
@@ -83,8 +75,15 @@ const ArtistDetailsScreen = () => {
         }
     };
 
+    useEffect(() => {
+        getArtistDetails().then(artist => setArtistDetails(artist));
+        getArtistAlbums().then(albums => setArtistAlbums(albums));
+        // setartistDetails(getArtistDetails());
+        console.log(artistDetails);
+        console.log(artistAlbums);
+    }, []);
     return (
-        <div className="row mt-2">
+        <div className="row mt-2 mb-4">
             <h1>Artist Details Screen</h1>
             <div className="col-2 col-lg-1 col-xl-2">
                 <NavigationSidebar active="search"/>
@@ -93,14 +92,17 @@ const ArtistDetailsScreen = () => {
                 <div className="col-12 col-lg-6 col-xxl-5">
                     {getImage(artistDetails, "400px")}
                     <br/>
-                    <button className="mt-3 me-3 btn btn-success"><i
-                        className="far fa-thumbs-up me-1 wd-14px-font wd-gray-color"></i></button>
-                    <button className="mt-3 btn btn-danger"><i
-                        className="far fa-thumbs-down me-1 wd-14px-font wd-gray-color"></i></button>
+                    <button className="mt-3 me-3 btn btn-success">
+                        <i className="far fa-thumbs-up me-1 wd-14px-font wd-gray-color"/>
+                    </button>
+                    <button className="mt-3 btn btn-danger">
+                        <i className="far fa-thumbs-down me-1 wd-14px-font wd-gray-color"/><
+                        /button>
                     <br/>
                     <textarea className="mt-3 form-control me-2" placeholder="Leave a review"
-                              style={{"width": "400px"}}></textarea>
-                    <button className="mt-3 btn btn-secondary">Submit</button>
+                              style={{"width": "400px"}}/>
+                    <button className="mt-3 mb-4 btn btn-secondary">Submit</button>
+                    <h4>Reviews</h4>
                 </div>
                 <div className="col-12 col-lg-6 col-xxl-7">
                     <div >
@@ -111,12 +113,9 @@ const ArtistDetailsScreen = () => {
 
                     <div className="mt-5">
                         <h3 className="mt-5 mb-3">Discography</h3>
-
                         {formatAlbums(artistAlbums)}
                     </div>
                 </div>
-                {/*{getArtists(artistDetails)}*/}
-                {/*{formatTracks(artistDetails)}*/}
             </div>
 
         </div>
