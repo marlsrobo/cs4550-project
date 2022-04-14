@@ -37,7 +37,6 @@ const ArtistDetailsScreen = () => {
                 <a href={artist.external_urls.spotify} target="_blank">
                     <img src="/images/Spotify_icon.png" className="float-end ps-5" height="100px"/></a>
             );
-
         } catch (Exception) {
         }
     };
@@ -46,7 +45,6 @@ const ArtistDetailsScreen = () => {
         try {
             return <h5>{artist.followers.total.toLocaleString("en-US")} listeners</h5>;
         } catch (Exception) {
-
         }
     };
 
@@ -78,9 +76,6 @@ const ArtistDetailsScreen = () => {
     useEffect(() => {
         getArtistDetails().then(artist => setArtistDetails(artist));
         getArtistAlbums().then(albums => setArtistAlbums(albums));
-        // setartistDetails(getArtistDetails());
-        console.log(artistDetails);
-        console.log(artistAlbums);
     }, []);
     return (
         <div className="row mt-2 mb-4">
@@ -96,8 +91,8 @@ const ArtistDetailsScreen = () => {
                         <i className="far fa-thumbs-up me-1 wd-14px-font wd-gray-color"/>
                     </button>
                     <button className="mt-3 btn btn-danger">
-                        <i className="far fa-thumbs-down me-1 wd-14px-font wd-gray-color"/><
-                        /button>
+                        <i className="far fa-thumbs-down me-1 wd-14px-font wd-gray-color"/>
+                    </button>
                     <br/>
                     <textarea className="mt-3 form-control me-2" placeholder="Leave a review"
                               style={{"width": "400px"}}/>

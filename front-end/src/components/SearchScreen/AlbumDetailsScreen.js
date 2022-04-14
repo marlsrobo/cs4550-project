@@ -9,11 +9,7 @@ const AlbumDetailsScreen = () => {
     const [albumDetails, setAlbumDetails] = useState({});
     const getAlbumDetails = async () => {
         let details = await fetchAlbumByIdFromSpotify(albumId);
-        // console.log(details);
         return details.data;
-        // setAlbumDetails(details.data);
-        // console.log(details.data);
-        // console.log(albumDetails);
     };
 
     const getImage = (album) => {
@@ -81,7 +77,6 @@ const AlbumDetailsScreen = () => {
 
     useEffect(() => {
         getAlbumDetails().then(album => setAlbumDetails(album));
-        // setAlbumDetails(getAlbumDetails());
         console.log(albumDetails);
     }, []);
     return (
