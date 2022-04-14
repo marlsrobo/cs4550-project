@@ -131,7 +131,7 @@ const ArtistDetailsScreen = () => {
                 <NavigationSidebar active="search"/>
             </div>
             <div className="col-10 col-lg-11 col-xl-10 mt-3 row">
-                <div className="col-5">
+                <div className="col-12 col-lg-6 col-xxl-5">
                     {getImage(artistDetails, "400px")}
                     <br/>
                     <button className="mt-3 me-3 btn btn-success"><i
@@ -143,7 +143,7 @@ const ArtistDetailsScreen = () => {
                               style={{"width": "400px"}}></textarea>
                     <button className="mt-3 btn btn-secondary">Submit</button>
                 </div>
-                <div className="col-7">
+                <div className="col-12 col-lg-6 col-xxl-7">
                     <div >
                         {formatAlbumLinkToSpotify(artistDetails)}
                         <h1>{artistDetails.name}</h1>
