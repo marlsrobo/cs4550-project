@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom";
+
 const ArtistSearchSummary = ({artist}) => {
 
     const imageStyle = {
@@ -41,6 +43,11 @@ const ArtistSearchSummary = ({artist}) => {
                 Genres: {formatGenres(artist.genres)}
                 <br/>
                 <a href={artist.external_urls.spotify} target="_blank">Listen on Spotify</a>
+            </div>
+            <div className="float-end">
+                <Link to={`/artist/details/${artist.id}`}>
+                    <button className="btn btn-secondary">Click for more details</button>
+                </Link>
             </div>
 
         </li>

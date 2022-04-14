@@ -104,10 +104,10 @@ const AlbumDetailsScreen = () => {
                     <h1>{albumDetails.name}</h1>
                 </div>
                 {getArtists(albumDetails)}
+                <br/>
                 {formatTracks(albumDetails)}
             </div>
         </div>
-
     );
 };
 export default AlbumDetailsScreen;

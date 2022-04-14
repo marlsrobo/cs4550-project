@@ -64,8 +64,40 @@ export const fetchAlbumByIdFromSpotify = async (albumId) => {
                 'Authorization': `Bearer ${access_token}`
             }
         });
-        // console.log(response.data);
-        // console.log(response.data);
+        return response;
+    }catch(error){
+        console.log(error);
+    }
+};
+
+export const fetchArtistByIdFromSpotify = async (artistId) => {
+    const access_token = await getAuth();
+
+    const api_url = `https://api.spotify.com/v1/artists/${artistId}`;
+    console.log(api_url);
+    try{
+        const response = await axios.get(api_url, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`
+            }
+        });
+        return response;
+    }catch(error){
+        console.log(error);
+    }
+};
+
+export const fetchAllArtistAlbumsByIdFromSpotify = async (artistId) => {
+    const access_token = await getAuth();
+
+    const api_url = `https://api.spotify.com/v1/artists/${artistId}/albums?market=US&limit=50`;
+    console.log(api_url);
+    try{
+        const response = await axios.get(api_url, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`
+            }
+        });
         return response;
     }catch(error){
         console.log(error);
