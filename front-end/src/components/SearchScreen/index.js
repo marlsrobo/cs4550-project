@@ -49,7 +49,7 @@ const SearchScreen = () => {
                     <div className="col-8">
                         <input className="form-control bg-black border-1"
                                style={{"color": "gray"}}
-                               placeholder="Search by artist, song, or user"
+                               placeholder="Search by artist, album, or user"
                                ref={searchRef}>
                         </input>
                     </div>
