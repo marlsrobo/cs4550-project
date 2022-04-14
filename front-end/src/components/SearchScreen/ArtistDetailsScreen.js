@@ -23,60 +23,19 @@ const ArtistDetailsScreen = () => {
 
     const getImage = (artist, height) => {
         try {
-            return <img id="artistImg" src={artist.images[0].url} className="me-3" height={height}/>
+            return <img id="artistImg" src={artist.images[0].url} className="me-3" height={height} width={height}
+                        style={{"objectFit": "cover"}}/>
         } catch (Exception) {
             return <img id="artistImg" src="/images/blankProfile.png" className=" me-3"/>
         }
     };
 
-    const getArtists = (artist) => {
-        try {
-            return <h3><Link to={`/artist/details/${artist.artists[0].id}`}>{artist.artists[0].name}</Link></h3>
-        } catch (Exception) {
-        }
-    };
-
-    const millisToMinutesAndSeconds = (millis) => {
-        let minutes = Math.floor(millis / 60000);
-        let seconds = ((millis % 60000) / 1000).toFixed(0);
-        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-    }
-
-    const formatTrack = (track) => {
-        return (
-            <li className="list-group-item">
-              <span className="float-start">
-                  {track.track_number}. {track.name} <span
-                  style={{"color": "red"}}>{track.explicit && "EXPLICIT"}</span>
-              </span>
-                <span className="float-end">
-                  {millisToMinutesAndSeconds(track.duration_ms)}
-              </span>
-            </li>
-        );
-    };
-
-    // const formatTracks = (artist) => {
-    //     try {
-    //         console.log(artist.tracks.items);
-    //         return(
-    //             <ul className="list-group">
-    //
-    //                 {
-    //                     artist.tracks.items.map(track => formatTrack(track))
-    //                 }
-    //             </ul>
-    //         );
-    //     } catch (Exception) {
-    //
-    //     }
-    // };
 
     const formatAlbumLinkToSpotify = (artist) => {
         try {
             return (
-                <a href={artist.external_urls.spotify} target="_blank"><img src="/images/Spotify_icon.png"
-                                                                            className="float-end ps-5" height="100px"/></a>
+                <a href={artist.external_urls.spotify} target="_blank">
+                    <img src="/images/Spotify_icon.png" className="float-end ps-5" height="100px"/></a>
             );
 
         } catch (Exception) {
