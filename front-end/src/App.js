@@ -22,6 +22,7 @@ function App() {
                     <Route path="profile" element={<ProfileScreen/>}/>
                     <Route path="login" element={<LoginScreen/>}/>
                     <Route path="search" element={<SearchScreen/>}/>
+                    <Route path="search/:searchString" element={<SearchScreen/>}/>
                     <Route path="album/details/:albumId" element={<AlbumDetailsScreen/>}/>
                     <Route path="artist/details/:artistId" element={<ArtistDetailsScreen/>}/>
                 </Route>
