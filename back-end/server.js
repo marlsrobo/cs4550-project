@@ -1,6 +1,8 @@
 import express from 'express';
 import mongoose from "mongoose";
 import cors from 'cors';
+import session from 'express-session';
+
 import usersController from "./controllers/users-controller.js";
 const CONNECTION_STRING = "mongodb+srv://marlsrobo:shit4brains@cluster0.dvavu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority" || "mongodb://localhost:27017/webdev"
 
@@ -12,8 +14,25 @@ const app = express();
 mongoose.connect(CONNECTION_STRING);
 
 
-app.use(cors());
+app.use(cors(
+    {
+        credentials: true,
+        origin: 'http://localhost:3000'
+    }
+));
 app.use(express.json());
+
+const sess = {
+    secret: 'keyboard cat', // todo move to environment var
+    cookie: {}
+}
+
+if (app.get('env') === 'production') {
+    app.set('trust proxy', 1)
+    sess.cookie.secure = true
+}
+
+app.use(session(sess));
 
 usersController(app);
 app.get('/', (req, res) => {res.send('Welcome to Full Stack Development!')});

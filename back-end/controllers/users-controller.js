@@ -2,9 +2,9 @@ import * as usersDao from "../database/users/users-dao.js";
 
 const usersController = (app) => {
     app.post('/api/signup', signup);
-    // app.post('/api/signin', signin);
+    app.post('/api/signin', signin);
     // app.post('/api/signout', signout);
-    // app.post('/api/profile', profile);
+    app.post('/api/profile', profile);
 
     app.get('/api/users', findAllUsers)
     // app.get('/api/users/:id', findUserById)
@@ -72,18 +72,28 @@ const signup = async (req, res) => {
     }
 };
 
-const signin = (req, res) => {
+const signin = async (req, res) => {
+    const existingUser = await usersDao.findUserByCredentials(req.body.email, req.body.password);
+    if (existingUser) {
+        req.session['currentUser'] = existingUser;
+        return res.sendStatus(200);
+    } else {
+        return res.sendStatus(503);
+    }
+};
+
+const signout = async (req, res) => {
 
 
 };
 
-const signout = (req, res) => {
-
-
-};
-
-const profile = (req, res) => {
-
+const profile = async (req, res) => {
+    const currentUser = req.session['currentUser'];
+    if(currentUser) {
+        res.json(currentUser);
+    } else {
+        res.sendStatus(503);
+    }
 
 };
 
