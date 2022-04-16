@@ -12,6 +12,7 @@ import ArtistDetailsScreen from "./components/SearchScreen/ArtistDetailsScreen";
 
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import SignupScreen from "./components/SignupScreen";
+import SigninScreen from "./components/SigninScreen";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Routes>
                 <Route path="/">
                     <Route path="signup" element={<SignupScreen/>}/>
+                    <Route path="signin" element={<SigninScreen/>}/>
                     <Route index element={<HomeScreen/>}/>
                     <Route path="profile" element={<ProfileScreen/>}/>
                     <Route path="login" element={<LoginScreen/>}/>
