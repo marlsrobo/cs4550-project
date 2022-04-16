@@ -2,6 +2,9 @@ import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
+const api = axios.create({
+    withCredentials: true
+});
 // According to the zoom recordings:
 // we need to put all the user-controller stuff in the
 // backend side so we can retrieve users from the api.
@@ -14,14 +17,14 @@ const SigninScreen = () => {
     const handleSignin = async () => {
         try {
             // todo move to user-service.js
-            await axios.post('http://localhost:4000/api/signup',
+            await api.post('http://localhost:4000/api/signin',
                 {
                     email: emailRef.current.value,
                     password: passwordRef.current.value
                 })
-            navigate('/signin');
+            navigate('/profile');
         } catch (e) {
-            alert('user already exists');
+            alert('user does not exist, please retry');
         }
 
     }

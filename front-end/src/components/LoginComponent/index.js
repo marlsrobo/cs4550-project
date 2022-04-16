@@ -1,19 +1,39 @@
-import {Link} from "react-router-dom";
-import {useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import axios from "axios";
 
-const ProfileInfo = () => {
+const api = axios.create({
+    withCredentials: true
+});
+
+const LoginComponent = () => {
+    const [currentUser, setCurrentUser] = useState({});
+    const fetchCurrentUser = async () => {
+        try {
+            const response = await api.post('http://localhost:4000/api/profile');
+            setCurrentUser(response.data);
+        } catch (e) {
+        }
+    }
+
+    const profileInfo = () => {
+        if (currentUser) {
+            return <h3>Hello {currentUser.firstName}</h3>
+        }
+        else {
+            return <h3>Login</h3>
+        }
+    }
+
+    useEffect(() => {
+        fetchCurrentUser()
+    }, [])
     return (
-      <h1>Logged in</h1>
+        <div>
+            {!currentUser && <Link to='/login'>Login</Link>}
+            {currentUser && currentUser.firstName}
+        </div>
     );
 }
 
-const LoginComponent = () => {
-    const [loggedIn, setLoggedIn] = useState(false);
-    return (
-        <div>
-            {!loggedIn && <Link to='/login' onClick={() => setLoggedIn(true)}>Login</Link>}
-            {loggedIn && <ProfileInfo/>}
-        </div>
-    );
-};
 export default LoginComponent;
