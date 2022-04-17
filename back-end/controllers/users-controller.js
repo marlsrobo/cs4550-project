@@ -3,7 +3,7 @@ import * as usersDao from "../database/users/users-dao.js";
 const usersController = (app) => {
     app.post('/api/signup', signup);
     app.post('/api/signin', signin);
-    // app.post('/api/signout', signout);
+    app.post('/api/signout', signout);
     app.post('/api/profile', profile);
 
     app.get('/api/users', findAllUsers)
@@ -83,8 +83,8 @@ const signin = async (req, res) => {
 };
 
 const signout = async (req, res) => {
-
-
+    req.session.destroy();
+    res.send(200);
 };
 
 const profile = async (req, res) => {
