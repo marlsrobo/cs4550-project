@@ -1,13 +1,16 @@
 import NavigationSidebar from "../NavigationSidebar";
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {performSearch} from "../Services/spotify-api-services";
 import ArtistSearchSummary from "./ArtistSearchSummary";
 import AlbumSearchSummary from "./AlbumSearchSummary";
+import {useLocation, useParams, useNavigate} from "react-router-dom";
 
 const SearchScreen = () => {
     const [results, setResults] = useState([]);
     const searchRef = useRef();
-
+    const navigate = useNavigate();
+    const {searchString} = useParams();
+    const location = useLocation();
     const formatSearch = (resultObject) => {
         if (getSelectedSearchBy() === "artist") {
             return <ArtistSearchSummary artist={resultObject}/>
@@ -21,6 +24,8 @@ const SearchScreen = () => {
         const searchKey = searchRef.current.value;
         const response = await performSearch(searchKey, getSelectedSearchBy());
         setResults(response);
+        navigate(`/search/${searchKey}`);
+        // window.location.href = `/search/${searchKey}`;
     };
 
     const getSelectedSearchBy = () => {
@@ -28,6 +33,12 @@ const SearchScreen = () => {
         return selectElement.value;
     }
 
+    useEffect(() => {
+        if(searchString) {
+            searchRef.current.value = searchString
+            search();
+        }
+    }, [])
     return(
         <>
         <div className="row mt-2">
