@@ -17,6 +17,12 @@ const LoginComponent = () => {
         }
     }
 
+    const profilePicStyle = {
+        width: "70px",
+        objectFit: "cover",
+        borderRadius: "50%"
+    }
+
     const fetchCurrentUser = async () => {
         try {
             const response = await api.post('http://localhost:4000/api/profile');
@@ -30,10 +36,10 @@ const LoginComponent = () => {
             return (
                 <div>
                     <div className="row">
-                        <img src="images/blankProfile.png"
-                             style={{"objectFit": "cover"}, {"borderRadius": "50%"}, {"width": "10px"}}/>
-                        <h5>Hello {currentUser.firstName}</h5>
+                        <img src="images/blankProfile.png" style={profilePicStyle} className="float-start col"/>
+                        <h5 className="float-end col">{currentUser.firstName}</h5>
                     </div>
+                    <br/>
                     <button onClick={logoutUser} className="btn btn-secondary mb-3">Logout</button>
                 </div>
 
