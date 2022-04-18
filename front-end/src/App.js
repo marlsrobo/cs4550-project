@@ -9,6 +9,7 @@ import LoginScreen from "./components/LoginScreen";
 import SearchScreen from "./components/SearchScreen";
 import AlbumDetailsScreen from "./components/SearchScreen/AlbumDetailsScreen";
 import ArtistDetailsScreen from "./components/SearchScreen/ArtistDetailsScreen";
+import PrivacyScreen from "./components/PrivacyScreen";
 
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import SignupScreen from "./components/SignupScreen";
@@ -29,6 +30,7 @@ function App() {
                     <Route path="search/:searchString" element={<SearchScreen/>}/>
                     <Route path="album/details/:albumId" element={<AlbumDetailsScreen/>}/>
                     <Route path="artist/details/:artistId" element={<ArtistDetailsScreen/>}/>
+                    <Route path="privacy-policy" element={<PrivacyScreen/>}/>
                 </Route>
             </Routes>
         </div>
