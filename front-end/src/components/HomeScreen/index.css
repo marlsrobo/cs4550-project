@@ -1,0 +1,13 @@
+.pos-fixed {
+    position: fixed;
+    right: 0px;
+    bottom: 0px;
+}
+
+.dimension-landscape {
+    width: 100%;
+    height: 70px;
+}
+
+.fg-color-white { color: white; }
+.bg-color-dark-gray { background-color: #373737; }
