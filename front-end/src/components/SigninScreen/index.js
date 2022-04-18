@@ -23,7 +23,7 @@ const SigninScreen = () => {
                     email: emailRef.current.value,
                     password: passwordRef.current.value
                 })
-            navigate('/profile');
+            navigate('/');
         } catch (e) {
             alert('user does not exist, please retry');
         }
