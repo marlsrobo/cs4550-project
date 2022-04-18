@@ -36,7 +36,9 @@ const LoginComponent = () => {
             return (
                 <div>
                     <div className="row">
-                        <img src="/images/blankProfile.png" style={profilePicStyle} className="float-start col"/>
+                        <Link to="/profile">
+                              <img src="/images/blankProfile.png" style={profilePicStyle} className="float-start col"/>
+                        </Link>
                         <h5 className="float-end col">{currentUser.firstName}</h5>
                     </div>
                     <br/>

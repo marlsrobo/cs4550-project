@@ -27,6 +27,14 @@ const NavigationSidebar = (
                         <div className="col-10 d-none d-xl-block">Search</div>
                     </div>
                 </Link>
+                <Link to="/profile" className={`list-group-item list-group-item-action ${active === 'profile' ? 'active' : ''}`}>
+                    <div className="row">
+                        <div className="col-2">
+                            <i className="fas fa-user"></i>
+                        </div>
+                        <div className="col-10 d-none d-xl-block">Profile</div>
+                    </div>
+                </Link>
             </div>
         </>
     );
