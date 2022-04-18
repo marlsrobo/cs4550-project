@@ -48,10 +48,12 @@ const HomeScreen = () => {
             {/*    <WhoToFollowList/>*/}
             {/*</div>*/}
             <div className="pos-fixed dimension-landscape bg-color-dark-gray pt-3 ps-5">
+                <span className="float-start">
                 <b>Notice.</b> By using our website, you agree to our <Link to="/privacy-policy">Privacy Policy.</Link>
-                {/*<Link to="/privacy-policy">*/}
-                {/*   <button className='btn btn-primary mb-3 me-3 float-right'>Read Privacy Policy</button>*/}
-                {/*</Link>*/}
+                    </span>
+                <Link to="/privacy-policy" className="col">
+                   <button className='btn btn-primary mb-3 me-3 float-end'>Read Privacy Policy</button>
+                </Link>
             </div>
         </div>
     );
