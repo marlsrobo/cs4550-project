@@ -12,7 +12,7 @@ const usersController = (app) => {
     // app.post('/api/users/credentials', findUserByCredentials)
     // app.post('/api/users', createUser)
     // app.delete('/api/users/:id', deleteUser)
-    // app.put('/api/users/:id', updateUser)
+    app.put('/api/users/:id', updateUser)
 }
 
 const findAllUsers = async (req, res) => {
