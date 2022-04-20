@@ -7,7 +7,7 @@ const usersController = (app) => {
     app.post('/api/profile', profile);
 
     app.get('/api/users', findAllUsers)
-    // app.get('/api/users/:id', findUserById)
+    app.get('/api/users/:id', findUserById)
     // app.get('/api/users/email/:email', findUserByEmail)
     // app.post('/api/users/credentials', findUserByCredentials)
     // app.post('/api/users', createUser)

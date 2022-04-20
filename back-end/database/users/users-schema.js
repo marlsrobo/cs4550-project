@@ -6,7 +6,7 @@ const usersSchema = mongoose.Schema({
     lastName: String,
     userType: String,
     dob: Date,
-    about: String,
-    profilePic: String
+    about: {type: String, default: "Welcome to my profile!"},
+    profilePic: {type: String, default: "/images/blankProfile.png"}
 }, {collection: "users"})
 export default usersSchema;
