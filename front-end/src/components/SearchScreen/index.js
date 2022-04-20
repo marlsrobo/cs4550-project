@@ -3,7 +3,6 @@ import React, {useEffect, useRef, useState} from "react";
 import {performSearch} from "../Services/spotify-api-services";
 import ArtistSearchSummary from "./ArtistSearchSummary";
 import AlbumSearchSummary from "./AlbumSearchSummary";
-import PrivacyPolicyComponent from "../PrivacyPolicyComponent";
 import {useLocation, useParams, useNavigate} from "react-router-dom";
 
 const SearchScreen = () => {
@@ -26,7 +25,6 @@ const SearchScreen = () => {
         const response = await performSearch(searchKey, getSelectedSearchBy());
         setResults(response);
         navigate(`/search/${searchKey}`);
-        // window.location.href = `/search/${searchKey}`;
     };
 
     const getSelectedSearchBy = () => {
@@ -80,7 +78,6 @@ const SearchScreen = () => {
                     </ul>
                 </div>
             </div>
-            <PrivacyPolicyComponent/>
         </>
     );
 };

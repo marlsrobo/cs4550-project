@@ -16,6 +16,7 @@ const SignupScreen = () => {
     const passwordRef = useRef();
     const firstNameRef = useRef();
     const lastNameRef = useRef();
+    const dobRef = useRef();
     const navigate = useNavigate();
 
     const getUserType = () => {
@@ -50,7 +51,8 @@ const SignupScreen = () => {
                     password: passwordRef.current.value,
                     firstName: firstNameRef.current.value,
                     lastName: lastNameRef.current.value,
-                    userType: getUserType()
+                    userType: getUserType(),
+                    dob: dobRef.current.value
                 });
             handleSignin();
             // navigate('/signin');
@@ -71,6 +73,8 @@ const SignupScreen = () => {
                     <br/>
                     <input ref={emailRef} placeholder="Email" type="email" className="form-control col-6 mb-3"
                            tabIndex="3"/>
+                    <input className="form-control" type="date" ref={dobRef} tabIndex="5"/>
+                    <br/>
                     <div className="form-check">
                         <input defaultChecked className="form-check-input" type="radio" id="listener" name="userType"/>
                         <label className="form-check-label" htmlFor="listener">

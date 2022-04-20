@@ -1,6 +1,5 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import PrivacyPolicyComponent from "../PrivacyPolicyComponent";
 import NavigationSidebar from "../NavigationSidebar";
 import axios from "axios";
 
@@ -17,8 +16,62 @@ const ProfileScreen = () => {
             const response = await api.post('http://localhost:4000/api/profile');
             setCurrentUser(response.data);
         } catch (e) {
-            navigate("/profile");
+            navigate("/");
         }
+    }
+
+    const formatDob = (dob) => {
+        try {
+            const date = new Date(dob);
+            return date.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
+        } catch (e) {
+        }
+    }
+
+    const profilePicStyle = {
+        width: "200px",
+        objectFit: "cover",
+        borderRadius: "50%"
+    }
+
+    const saveAbout = () => {
+        const currentAboutForm = document.getElementById("about-me-form");
+        const currentAboutFormValue = currentAboutForm.value;
+        const aboutMeText = document.createElement('p');
+        aboutMeText.id = "about-me";
+        aboutMeText.innerHTML = currentAboutFormValue;
+        currentAboutForm.parentNode.replaceChild(aboutMeText, currentAboutForm);
+
+        const currentSaveButton = document.getElementById("save-about-button");
+        const editAboutButton = document.createElement('button');
+        editAboutButton.className = "btn btn-secondary";
+        editAboutButton.id = "edit-about-button";
+        editAboutButton.innerHTML = "Edit";
+        editAboutButton.onclick = function () { updateAbout()};
+        currentSaveButton.parentNode.replaceChild(editAboutButton, currentSaveButton);
+    }
+
+
+
+    const updateAbout = () => {
+
+        const currentAbout = document.getElementById("about-me");
+        const currentAboutValue = currentAbout.innerHTML;
+        const aboutMeForm = document.createElement('textarea');
+        aboutMeForm.id = "about-me-form";
+        aboutMeForm.className = "form-control";
+        aboutMeForm.innerHTML = currentAboutValue;
+        currentAbout.parentNode.replaceChild(aboutMeForm, currentAbout);
+
+        const currentEditButton = document.getElementById("edit-about-button");
+        const saveEditButton = document.createElement('button');
+        saveEditButton.className = "btn btn-primary";
+        saveEditButton.id = "save-about-button";
+        saveEditButton.innerHTML = "Save";
+        saveEditButton.onclick = function () { saveAbout()};
+        currentEditButton.parentNode.replaceChild(saveEditButton, currentEditButton);
+
+
     }
 
     useEffect(() => {
@@ -30,8 +83,35 @@ const ProfileScreen = () => {
             <div className="col-2 col-lg-1 col-xl-2">
                 <NavigationSidebar active="profile"/>
             </div>
+            <div className="col-10 col-lg-11 col-xl-10 mt-3">
+                <div className="row mb-5">
+                <img src="/images/blankProfile.png" style={profilePicStyle} className="float-start me-5 col-6"/>
+                <div className="col-6">
+                    <h2>{currentUser.firstName} {currentUser.lastName}</h2>
+                    <h4>{currentUser.userType}</h4>
+                </div>
+                </div>
+                <div className="row mb-4">
+                    <h4>Personal Information</h4>
+                    <h5>Email: {currentUser.email}</h5>
+                    <h5>Date of birth: {formatDob(currentUser.dob)}</h5>
+                </div>
+                <div className="row">
+                    <h4 className="col-11">About</h4>
+                    <div className="col-1">
+                        <button className="btn btn-secondary" id="edit-about-button"
+                        onClick={updateAbout}>Edit</button>
+                    </div>
+                </div>
+                <div>
+                    <p id="about-me">
+                        some text
+                    </p>
+                </div>
+
+
+            </div>
             {JSON.stringify(currentUser)}
-            <PrivacyPolicyComponent/>
         </div>
     );
 };

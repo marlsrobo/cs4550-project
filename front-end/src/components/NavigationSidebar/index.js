@@ -1,12 +1,44 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import LoginComponent from "../LoginComponent";
+import axios from "axios";
+
+const api = axios.create({
+    withCredentials: true
+});
 
 const NavigationSidebar = (
     {
-        active = 'explore'
+        active = 'home'
     }
 ) => {
+    const [currentUser, setCurrentUser] = useState({});
+
+    const fetchCurrentUser = async () => {
+        try {
+            const response = await api.post('http://localhost:4000/api/profile');
+            setCurrentUser(response.data);
+        } catch (e) {
+        }
+    }
+
+    const displayProfileTab = () => {
+        if (JSON.stringify(currentUser) !== '{}') {
+            return (
+                <Link to={`/profile/${currentUser._id}`} className={`list-group-item list-group-item-action ${active === 'profile' ? 'active' : ''}`}>
+                <div className="row">
+                    <div className="col-2">
+                        <i className="fas fa-user"/>
+                    </div>
+                    <div className="col-10 d-none d-xl-block">Profile</div>
+                </div>
+            </Link>);
+        }
+    }
+
+    useEffect(() => {
+        fetchCurrentUser();
+    }, [])
     return(
         <>
             <div className="list-group">
@@ -27,14 +59,7 @@ const NavigationSidebar = (
                         <div className="col-10 d-none d-xl-block">Search</div>
                     </div>
                 </Link>
-                <Link to="/profile" className={`list-group-item list-group-item-action ${active === 'profile' ? 'active' : ''}`}>
-                    <div className="row">
-                        <div className="col-2">
-                            <i className="fas fa-user"></i>
-                        </div>
-                        <div className="col-10 d-none d-xl-block">Profile</div>
-                    </div>
-                </Link>
+                {displayProfileTab()}
             </div>
         </>
     );

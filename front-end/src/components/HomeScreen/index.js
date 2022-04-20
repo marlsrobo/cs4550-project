@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from "react";
 import NavigationSidebar from "../NavigationSidebar";
-import PrivacyPolicyComponent from "../PrivacyPolicyComponent";
-import {Outlet, useNavigate} from "react-router-dom";
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
 const api = axios.create({
@@ -40,7 +38,6 @@ const HomeScreen = () => {
             <div className="col-2 col-lg-1 col-xl-2">
                 <NavigationSidebar active="home"/>
             </div>
-            <PrivacyPolicyComponent/>
         </div>
     );
 };

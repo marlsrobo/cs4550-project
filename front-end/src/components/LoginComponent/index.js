@@ -36,7 +36,7 @@ const LoginComponent = () => {
             return (
                 <div>
                     <div className="row">
-                        <Link to="/profile">
+                        <Link to={`/profile/${currentUser._id}`}>
                               <img src="/images/blankProfile.png" style={profilePicStyle} className="float-start col"/>
                         </Link>
                         <h5 className="float-end col">{currentUser.firstName}</h5>
