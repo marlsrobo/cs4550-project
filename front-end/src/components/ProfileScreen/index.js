@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import NavigationSidebar from "../NavigationSidebar";
 import {updateUser} from "../Actions/users-actions";
 import axios from "axios";
+import {findUserById} from "../Actions/users-actions";
 
 const api = axios.create({
     withCredentials: true
@@ -11,17 +12,24 @@ const api = axios.create({
 
 const ProfileScreen = () => {
     const dispatch = useDispatch();
+    const user = useSelector(state => state.user);
+
     const [currentUser, setCurrentUser] = useState({});
     const navigate = useNavigate();
 
     const updateAboutDatabase = (newAbout) => {
         updateUser(dispatch, {...currentUser,
             about: newAbout})
+        fetchCurrentUser();
     };
 
     const fetchCurrentUser = async () => {
         try {
             const response = await api.post('http://localhost:4000/api/profile');
+            const currentUserId = response.data._id;
+            // todo value of current user needs to be updated within session cookie as well as in database (database is fine_
+            // todo need to change user in session cookie, maybe also check Jose lecture from monday
+            const databaseUser = findUserById(dispatch, currentUserId);
             setCurrentUser(response.data);
         } catch (e) {
             navigate("/");
@@ -31,6 +39,7 @@ const ProfileScreen = () => {
     const formatDob = (dob) => {
         try {
             const date = new Date(dob);
+            console.log(date);
             return date.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
         } catch (e) {
         }
@@ -84,7 +93,7 @@ const ProfileScreen = () => {
     }
 
     useEffect(() => {
-        fetchCurrentUser()
+        fetchCurrentUser();
     }, [])
     return(
         <div className="row mt-2">
