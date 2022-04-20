@@ -12,32 +12,42 @@ import ArtistDetailsScreen from "./components/SearchScreen/ArtistDetailsScreen";
 import PrivacyScreen from "./components/PrivacyScreen";
 
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {Provider} from "react-redux";
+import {createStore} from "redux";
+
 import SignupScreen from "./components/SignupScreen";
 import SigninScreen from "./components/SigninScreen";
 import PrivacyPolicyComponent from "./components/PrivacyPolicyComponent";
 
+import UsersReducer from "./components/Reducers/users-reducer";
+
+const store = createStore(UsersReducer);
+
+
 function App() {
-  return (
-      <BrowserRouter>
-        <div className="container" style={{"paddingBottom": "80px"}}>
-            <Routes>
-                <Route path="/">
-                    <Route path="signup" element={<SignupScreen/>}/>
-                    <Route path="signin" element={<SigninScreen/>}/>
-                    <Route index element={<HomeScreen/>}/>
-                    <Route path="profile/:userId" element={<ProfileScreen/>}/>
-                    <Route path="login" element={<LoginScreen/>}/>
-                    <Route path="search" element={<SearchScreen/>}/>
-                    <Route path="search/:searchString" element={<SearchScreen/>}/>
-                    <Route path="album/details/:albumId" element={<AlbumDetailsScreen/>}/>
-                    <Route path="artist/details/:artistId" element={<ArtistDetailsScreen/>}/>
-                    <Route path="privacy-policy" element={<PrivacyScreen/>}/>
-                </Route>
-            </Routes>
-            <PrivacyPolicyComponent/>
-        </div>
-      </BrowserRouter>
-  );
+    return (
+        <Provider store={store}>
+            <BrowserRouter>
+                <div className="container" style={{"paddingBottom": "80px"}}>
+                    <Routes>
+                        <Route path="/">
+                            <Route path="signup" element={<SignupScreen/>}/>
+                            <Route path="signin" element={<SigninScreen/>}/>
+                            <Route index element={<HomeScreen/>}/>
+                            <Route path="profile/:userId" element={<ProfileScreen/>}/>
+                            <Route path="login" element={<LoginScreen/>}/>
+                            <Route path="search" element={<SearchScreen/>}/>
+                            <Route path="search/:searchString" element={<SearchScreen/>}/>
+                            <Route path="album/details/:albumId" element={<AlbumDetailsScreen/>}/>
+                            <Route path="artist/details/:artistId" element={<ArtistDetailsScreen/>}/>
+                            <Route path="privacy-policy" element={<PrivacyScreen/>}/>
+                        </Route>
+                    </Routes>
+                    <PrivacyPolicyComponent/>
+                </div>
+            </BrowserRouter>
+        </Provider>
+    );
 }
 
 export default App;

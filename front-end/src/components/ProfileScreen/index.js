@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
 import NavigationSidebar from "../NavigationSidebar";
+import {updateUser} from "../Actions/users-actions";
 import axios from "axios";
 
 const api = axios.create({
@@ -8,9 +10,15 @@ const api = axios.create({
 });
 
 const ProfileScreen = () => {
-
+    const dispatch = useDispatch();
     const [currentUser, setCurrentUser] = useState({});
     const navigate = useNavigate();
+
+    const updateAboutDatabase = (newAbout) => {
+        updateUser(dispatch, {...currentUser,
+            about: newAbout})
+    };
+
     const fetchCurrentUser = async () => {
         try {
             const response = await api.post('http://localhost:4000/api/profile');
@@ -38,6 +46,7 @@ const ProfileScreen = () => {
         const currentAboutForm = document.getElementById("about-me-form");
         const currentAboutFormValue = currentAboutForm.value;
         const aboutMeText = document.createElement('p');
+        updateAboutDatabase(currentAboutFormValue);
         aboutMeText.id = "about-me";
         aboutMeText.innerHTML = currentAboutFormValue;
         currentAboutForm.parentNode.replaceChild(aboutMeText, currentAboutForm);
@@ -85,7 +94,7 @@ const ProfileScreen = () => {
             </div>
             <div className="col-10 col-lg-11 col-xl-10 mt-3">
                 <div className="row mb-5">
-                <img src="/images/blankProfile.png" style={profilePicStyle} className="float-start me-5 col-6"/>
+                <img src={currentUser.profilePic} style={profilePicStyle} className="float-start me-5 col-6"/>
                 <div className="col-6">
                     <h2>{currentUser.firstName} {currentUser.lastName}</h2>
                     <h4>{currentUser.userType}</h4>
@@ -105,7 +114,7 @@ const ProfileScreen = () => {
                 </div>
                 <div>
                     <p id="about-me">
-                        some text
+                        {currentUser.about}
                     </p>
                 </div>
 
