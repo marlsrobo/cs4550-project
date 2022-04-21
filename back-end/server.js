@@ -4,6 +4,9 @@ import cors from 'cors';
 import session from 'express-session';
 
 import usersController from "./controllers/users-controller.js";
+import albumsController from "./controllers/albums-controller.js";
+import albumReviewsController from "./controllers/album-reviews-controller.js";
+
 const CONNECTION_STRING = "mongodb+srv://marlsrobo:shit4brains@cluster0.dvavu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority" || "mongodb://localhost:27017/webdev"
 
 
@@ -35,5 +38,8 @@ if (app.get('env') === 'production') {
 app.use(session(sess));
 
 usersController(app);
+albumsController(app);
+albumReviewsController(app);
+
 app.get('/', (req, res) => {res.send('Welcome to Full Stack Development!')});
 app.listen(4000);
