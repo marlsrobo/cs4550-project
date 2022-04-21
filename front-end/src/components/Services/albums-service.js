@@ -10,6 +10,16 @@ export const findAlbumById = async (albumId) => {
     return response.data;
 }
 
+export const likeAlbum = async (album) => {
+    const response = await api.post(`${ALBUMS_API}/likes`, album);
+    return response.data;
+}
+
+export const dislikeAlbum = async (album) => {
+    const response = await api.post(`${ALBUMS_API}/dislikes`, album);
+    return response.data;
+}
+
 export const postAlbumReview = async (userId, albumId, review) => {
     const response = await api.post(`${ALBUMS_API}/${albumId}/reviews/${userId}`, review);
     return response.data;
