@@ -3,6 +3,11 @@ import React, {useEffect, useState} from "react";
 import {fetchAlbumByIdFromSpotify} from "../Services/spotify-api-services";
 import NavigationSidebar from "../NavigationSidebar";
 import {dislikeAlbum, findAlbumById, findAlbumReviewsByAlbumId, likeAlbum} from "../Services/albums-service";
+import axios from "axios";
+
+const api = axios.create({
+    withCredentials: true
+});
 
 const AlbumDetailsScreen = () => {
 
@@ -10,6 +15,16 @@ const AlbumDetailsScreen = () => {
     const [albumDetails, setAlbumDetails] = useState({});
     const [databaseAlbumDetails, setDatabaseAlbumDetails] = useState({});
     const [reviews, setReviews] = useState({});
+    const [currentUser, setCurrentUser] = useState({});
+
+    const fetchCurrentUser = async () => {
+        try {
+            const response = await api.post('http://localhost:4000/api/profile');
+            setCurrentUser(response.data);
+        } catch (e) {
+        }
+    }
+
     const fetchAlbumDetailsFromAPI = async () => {
         let details = await fetchAlbumByIdFromSpotify(albumId);
         return details.data;
@@ -26,24 +41,30 @@ const AlbumDetailsScreen = () => {
     }
 
     const handleLikes = async () => {
-        // console.log(databaseAlbumDetails);
-        const album = {
-            name: albumDetails.name,
-            albumId: albumId
+        if (JSON.stringify(currentUser) !== "{}") {
+            const album = {
+                name: albumDetails.name,
+                albumId: albumId
+            }
+            const response = await likeAlbum(album);
+            console.log(response);
+            setDatabaseAlbumDetails(response);
+        } else {
+            alert("You must be logged in to like an album");
         }
-        const response = await likeAlbum(album);
-        console.log(response);
-        setDatabaseAlbumDetails(response);
     }
 
     const handleDislikes = async () => {
-        console.log(databaseAlbumDetails);
-        const album = {
-            name: albumDetails.name,
-            albumId: albumId
+        if (JSON.stringify(currentUser) !== "{}") {
+            const album = {
+                name: albumDetails.name,
+                albumId: albumId
+            }
+            const response = await dislikeAlbum(album);
+            setDatabaseAlbumDetails(response);
+        } else {
+            alert("You must be logged in to dislike an album");
         }
-        const response = await dislikeAlbum(album);
-        setDatabaseAlbumDetails(response);
     }
 
     const getImage = (album) => {
@@ -110,6 +131,7 @@ const AlbumDetailsScreen = () => {
     };
 
     useEffect(() => {
+        fetchCurrentUser();
         fetchAlbumDetailsFromAPI().then(album => setAlbumDetails(album));
         fetchAlbumDetailsFromDatabase().then(album => setDatabaseAlbumDetails(album));
         findReviewsForAlbum().then(reviews => setReviews(reviews));
@@ -125,6 +147,7 @@ const AlbumDetailsScreen = () => {
                 <div className="col-12 col-lg-6 col-xxl-5">
                     {getImage(albumDetails)}
                     <br/>
+
                     <button onClick={handleLikes} className="mt-3 me-3 btn btn-success">
                         <i className="far fa-thumbs-up me-1 wd-14px-font wd-gray-color"/>
                         {databaseAlbumDetails ? databaseAlbumDetails.likes : 0}
@@ -134,10 +157,13 @@ const AlbumDetailsScreen = () => {
                         {databaseAlbumDetails ? databaseAlbumDetails.dislikes : 0}
                     </button>
                     <br/>
-                    <textarea className="mt-3 form-control me-2" placeholder="Leave a review"
-                              style={{"width": "400px"}}/>
-                    <button className="mt-3 mb-4 btn btn-secondary">Submit</button>
-                    <h4>Reviews</h4>
+                    {JSON.stringify(currentUser) !== '{}' &&
+                        <textarea className="mt-3 form-control me-2" placeholder="Leave a review"
+                                  style={{"width": "400px"}}/>}
+                    {JSON.stringify(currentUser) !== '{}' &&
+                        <button className="mt-3 btn btn-secondary">Submit</button>}
+                    <h4 className="mt-4">Reviews</h4>
+                    {JSON.stringify(reviews)}
                 </div>
                 <div className="col-12 col-lg-6 col-xxl-7">
                     <div>

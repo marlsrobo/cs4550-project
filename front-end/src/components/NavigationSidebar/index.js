@@ -22,20 +22,6 @@ const NavigationSidebar = (
         }
     }
 
-    const displayProfileTab = () => {
-        if (JSON.stringify(currentUser) !== '{}') {
-            return (
-                <Link to={`/profile/${currentUser._id}`} className={`list-group-item list-group-item-action ${active === 'profile' ? 'active' : ''}`}>
-                <div className="row">
-                    <div className="col-2">
-                        <i className="fas fa-user"/>
-                    </div>
-                    <div className="col-10 d-none d-xl-block">Profile</div>
-                </div>
-            </Link>);
-        }
-    }
-
     useEffect(() => {
         fetchCurrentUser();
     }, [])
@@ -59,7 +45,14 @@ const NavigationSidebar = (
                         <div className="col-10 d-none d-xl-block">Search</div>
                     </div>
                 </Link>
-                {displayProfileTab()}
+                {JSON.stringify(currentUser) !== "{}" && <Link to={`/profile/${currentUser._id}`} className={`list-group-item list-group-item-action ${active === 'profile' ? 'active' : ''}`}>
+                    <div className="row">
+                        <div className="col-2">
+                            <i className="fas fa-user"/>
+                        </div>
+                        <div className="col-10 d-none d-xl-block">Profile</div>
+                    </div>
+                </Link>}
             </div>
         </>
     );
