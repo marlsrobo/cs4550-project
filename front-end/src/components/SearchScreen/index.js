@@ -22,9 +22,10 @@ const SearchScreen = () => {
 
     const search = async () => {
         const searchKey = searchRef.current.value;
-        const response = await performSearch(searchKey, getSelectedSearchBy());
+        const searchType = getSelectedSearchBy();
+        const response = await performSearch(searchKey, searchType);
         setResults(response);
-        navigate(`/search/${searchKey}`);
+        navigate(`/search/${searchType}/${searchKey}`);
     };
 
     const getSelectedSearchBy = () => {
@@ -37,6 +38,7 @@ const SearchScreen = () => {
             searchRef.current.value = searchString
             search();
         }
+        console.log(location.pathname.slice(0, 14));
     }, [])
     return(
         <>
@@ -48,11 +50,10 @@ const SearchScreen = () => {
                 <div className="col-10 col-lg-11 col-xl-10 mt-3">
                     <div className="row mt-2">
                         <div className="col-2">
-                            <select id="searchByDropdown" className="form-select" style={{"height": "40px"}}
-                            >
-                                <option value="artist">Artist</option>
-                                <option value="album">Album</option>
-                                <option value="user">User</option>
+                            <select id="searchByDropdown" className="form-select" style={{"height": "40px"}}>
+                                <option value="artist" selected={location.pathname.slice(0, 14) === '/search/artist' || location.pathname === '/search'}>Artist</option>
+                                <option value="album" selected={location.pathname.slice(0, 13) === '/search/album'}>Album</option>
+                                <option value="user" selected={location.pathname.slice(0, 12) === '/search/user'}>User</option>
                             </select>
                         </div>
                         <div className="col-8">

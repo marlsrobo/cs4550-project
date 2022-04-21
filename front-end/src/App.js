@@ -37,7 +37,9 @@ function App() {
                             <Route path="profile/:userId" element={<ProfileScreen/>}/>
                             <Route path="login" element={<LoginScreen/>}/>
                             <Route path="search" element={<SearchScreen/>}/>
-                            <Route path="search/:searchString" element={<SearchScreen/>}/>
+                            <Route path="search/artist/:searchString" element={<SearchScreen/>}/>
+                            <Route path="search/album/:searchString" element={<SearchScreen/>}/>
+                            <Route path="search/user/:searchString" element={<SearchScreen/>}/>
                             <Route path="album/details/:albumId" element={<AlbumDetailsScreen/>}/>
                             <Route path="artist/details/:artistId" element={<ArtistDetailsScreen/>}/>
                             <Route path="privacy-policy" element={<PrivacyScreen/>}/>
