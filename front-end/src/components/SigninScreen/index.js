@@ -16,6 +16,7 @@ const SigninScreen = () => {
     const navigate = useNavigate();
 
     const handleSignin = async () => {
+        console.log(emailRef);
         try {
             // todo move to user-service.js
             await api.post('http://localhost:4000/api/signin',
@@ -28,6 +29,9 @@ const SigninScreen = () => {
             alert('user does not exist, please retry');
         }
     }
+    useEffect(() => {
+        console.log(emailRef);
+    })
     return (
         <div className="row mt-2 mb-4">
             <h1>Signin</h1>

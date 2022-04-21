@@ -1,16 +1,23 @@
 import {Link, useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {fetchAlbumByIdFromSpotify} from "../Services/spotify-api-services";
 import NavigationSidebar from "../NavigationSidebar";
-import {dislikeAlbum, findAlbumById, findAlbumReviewsByAlbumId, likeAlbum} from "../Services/albums-service";
+import {
+    dislikeAlbum,
+    findAlbumById,
+    findAlbumReviewsByAlbumId,
+    likeAlbum,
+    postAlbumReview
+} from "../Services/albums-service";
 import axios from "axios";
+import AlbumReviewList from "./AlbumReviewList";
 
 const api = axios.create({
     withCredentials: true
 });
 
 const AlbumDetailsScreen = () => {
-
+    const reviewRef = useRef();
     const {albumId} = useParams();
     const [albumDetails, setAlbumDetails] = useState({});
     const [databaseAlbumDetails, setDatabaseAlbumDetails] = useState({});
@@ -65,6 +72,17 @@ const AlbumDetailsScreen = () => {
         } else {
             alert("You must be logged in to dislike an album");
         }
+    }
+
+    const handleReview = async () => {
+        console.log(reviewRef.current.value);
+        const actualReview = await postAlbumReview(currentUser._id, albumId, {
+            review: reviewRef.current.value,
+            reviewerEmail: currentUser.email,
+            albumId: albumId
+        })
+        console.log(actualReview.data);
+        setReviews([...reviews, actualReview]);
     }
 
     const getImage = (album) => {
@@ -131,6 +149,7 @@ const AlbumDetailsScreen = () => {
     };
 
     useEffect(() => {
+        console.log(reviewRef);
         fetchCurrentUser();
         fetchAlbumDetailsFromAPI().then(album => setAlbumDetails(album));
         fetchAlbumDetailsFromDatabase().then(album => setDatabaseAlbumDetails(album));
@@ -158,12 +177,13 @@ const AlbumDetailsScreen = () => {
                     </button>
                     <br/>
                     {JSON.stringify(currentUser) !== '{}' &&
-                        <textarea className="mt-3 form-control me-2" placeholder="Leave a review"
+                        <textarea ref={reviewRef} className="mt-3 form-control me-2" placeholder="Leave a review"
                                   style={{"width": "400px"}}/>}
                     {JSON.stringify(currentUser) !== '{}' &&
-                        <button className="mt-3 btn btn-secondary">Submit</button>}
+                        <button className="mt-3 btn btn-secondary" onClick={handleReview}>Submit</button>}
                     <h4 className="mt-4">Reviews</h4>
-                    {JSON.stringify(reviews)}
+                    <AlbumReviewList reviews={reviews}/>
+                    {/*{JSON.stringify(reviews)}*/}
                 </div>
                 <div className="col-12 col-lg-6 col-xxl-7">
                     <div>
