@@ -49,7 +49,7 @@ const LoginComponent = () => {
         }
         else {
             return (
-                <div className="">
+                <div>
                     <Link to='/signin'><button className='btn btn-secondary mb-3 me-3'>Login</button></Link>
                     <Link to='/signup'><button className='btn btn-secondary mb-3'>Sign Up</button></Link>
                 </div>

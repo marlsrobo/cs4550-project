@@ -18,8 +18,10 @@ const ProfileScreen = () => {
     const navigate = useNavigate();
 
     const updateAboutDatabase = (newAbout) => {
-        updateUser(dispatch, {...currentUser,
-            about: newAbout})
+        updateUser(dispatch, {
+            ...currentUser,
+            about: newAbout
+        })
         fetchCurrentUser();
     };
 
@@ -40,7 +42,7 @@ const ProfileScreen = () => {
         try {
             const date = new Date(dob);
             console.log(date);
-            return date.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
+            return date.toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'});
         } catch (e) {
         }
     }
@@ -65,10 +67,11 @@ const ProfileScreen = () => {
         editAboutButton.className = "btn btn-secondary";
         editAboutButton.id = "edit-about-button";
         editAboutButton.innerHTML = "Edit";
-        editAboutButton.onclick = function () { updateAbout()};
+        editAboutButton.onclick = function () {
+            updateAbout()
+        };
         currentSaveButton.parentNode.replaceChild(editAboutButton, currentSaveButton);
     }
-
 
 
     const updateAbout = () => {
@@ -86,7 +89,9 @@ const ProfileScreen = () => {
         saveEditButton.className = "btn btn-primary";
         saveEditButton.id = "save-about-button";
         saveEditButton.innerHTML = "Save";
-        saveEditButton.onclick = function () { saveAbout()};
+        saveEditButton.onclick = function () {
+            saveAbout()
+        };
         currentEditButton.parentNode.replaceChild(saveEditButton, currentEditButton);
 
 
@@ -95,7 +100,7 @@ const ProfileScreen = () => {
     useEffect(() => {
         fetchCurrentUser();
     }, [])
-    return(
+    return (
         <div className="row mt-2">
             <h1>Profile Screen</h1>
             <div className="col-2 col-lg-1 col-xl-2">
@@ -103,11 +108,15 @@ const ProfileScreen = () => {
             </div>
             <div className="col-10 col-lg-11 col-xl-10 mt-3">
                 <div className="row mb-5">
-                <img src={currentUser.profilePic} style={profilePicStyle} className="float-start me-5 col-6"/>
-                <div className="col-6">
-                    <h2>{currentUser.firstName} {currentUser.lastName}</h2>
-                    <h4>{currentUser.userType}</h4>
-                </div>
+                    <div className="col-4">
+                        <img src={currentUser.profilePic} style={profilePicStyle} className="mb-3"/>
+                        <label htmlFor="formFile" className="form-label">Change profile picture</label>
+                        <input className="form-control" type="file" id="formFile"/>
+                    </div>
+                    <div className="col-8">
+                        <h2>{currentUser.firstName} {currentUser.lastName}</h2>
+                        <h4>{currentUser.userType}</h4>
+                    </div>
                 </div>
                 <div className="row mb-4">
                     <h4>Personal Information</h4>
@@ -118,7 +127,8 @@ const ProfileScreen = () => {
                     <h4 className="col-11">About</h4>
                     <div className="col-1">
                         <button className="btn btn-secondary" id="edit-about-button"
-                        onClick={updateAbout}>Edit</button>
+                                onClick={updateAbout}>Edit
+                        </button>
                     </div>
                 </div>
                 <div>
@@ -126,8 +136,6 @@ const ProfileScreen = () => {
                         {currentUser.about}
                     </p>
                 </div>
-
-
             </div>
             {JSON.stringify(currentUser)}
         </div>

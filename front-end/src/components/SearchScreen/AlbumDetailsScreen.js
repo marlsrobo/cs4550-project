@@ -2,15 +2,26 @@ import {Link, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {fetchAlbumByIdFromSpotify} from "../Services/spotify-api-services";
 import NavigationSidebar from "../NavigationSidebar";
+import {findAlbumById, findAlbumReviewsByAlbumId} from "../Services/albums-service";
 
 const AlbumDetailsScreen = () => {
 
     const {albumId} = useParams();
     const [albumDetails, setAlbumDetails] = useState({});
-    const getAlbumDetails = async () => {
+    const [databaseAlbumDetails, setDatabaseAlbumDetails] = useState({});
+    const [reviews, setReviews] = useState({});
+    const fetchAlbumDetailsFromAPI = async () => {
         let details = await fetchAlbumByIdFromSpotify(albumId);
         return details.data;
     };
+    const fetchAlbumDetailsFromDatabase = async () => {
+        let details = await findAlbumById(albumId);
+        return details.data;
+    }
+    const findReviewsForAlbum = async () => {
+        let reviews = await findAlbumReviewsByAlbumId(albumId);
+        return reviews.data;
+    }
 
     const getImage = (album) => {
         try {
@@ -76,7 +87,9 @@ const AlbumDetailsScreen = () => {
     };
 
     useEffect(() => {
-        getAlbumDetails().then(album => setAlbumDetails(album));
+        fetchAlbumDetailsFromAPI().then(album => setAlbumDetails(album));
+        fetchAlbumDetailsFromDatabase().then(album => setDatabaseAlbumDetails(album));
+        findReviewsForAlbum.then(reviews => setReviews(reviews));
         console.log(albumDetails);
     }, []);
     return (
