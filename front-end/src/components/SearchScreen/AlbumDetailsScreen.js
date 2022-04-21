@@ -16,31 +16,34 @@ const AlbumDetailsScreen = () => {
     };
     const fetchAlbumDetailsFromDatabase = async () => {
         let details = await findAlbumById(albumId);
-        return details.data;
+        if (details) {
+            return details;
+        }
     }
     const findReviewsForAlbum = async () => {
         let reviews = await findAlbumReviewsByAlbumId(albumId);
-        return reviews.data;
+        return reviews;
     }
 
     const handleLikes = async () => {
-        console.log(albumDetails);
+        // console.log(databaseAlbumDetails);
         const album = {
             name: albumDetails.name,
             albumId: albumId
         }
         const response = await likeAlbum(album);
-        setDatabaseAlbumDetails(response.data);
+        console.log(response);
+        setDatabaseAlbumDetails(response);
     }
 
     const handleDislikes = async () => {
-        console.log(albumDetails);
+        console.log(databaseAlbumDetails);
         const album = {
             name: albumDetails.name,
             albumId: albumId
         }
         const response = await dislikeAlbum(album);
-        setDatabaseAlbumDetails(response.data);
+        setDatabaseAlbumDetails(response);
     }
 
     const getImage = (album) => {
@@ -109,7 +112,7 @@ const AlbumDetailsScreen = () => {
     useEffect(() => {
         fetchAlbumDetailsFromAPI().then(album => setAlbumDetails(album));
         fetchAlbumDetailsFromDatabase().then(album => setDatabaseAlbumDetails(album));
-        findReviewsForAlbum.then(reviews => setReviews(reviews));
+        findReviewsForAlbum().then(reviews => setReviews(reviews));
         console.log(albumDetails);
     }, []);
     return (
@@ -124,11 +127,11 @@ const AlbumDetailsScreen = () => {
                     <br/>
                     <button onClick={handleLikes} className="mt-3 me-3 btn btn-success">
                         <i className="far fa-thumbs-up me-1 wd-14px-font wd-gray-color"/>
-                        ${databaseAlbumDetails.likes}
+                        {databaseAlbumDetails ? databaseAlbumDetails.likes : 0}
                     </button>
                     <button onClick={handleDislikes} className="mt-3 btn btn-danger">
                         <i className="far fa-thumbs-down me-1 wd-14px-font wd-gray-color"/>
-                        ${databaseAlbumDetails.dislikes}
+                        {databaseAlbumDetails ? databaseAlbumDetails.dislikes : 0}
                     </button>
                     <br/>
                     <textarea className="mt-3 form-control me-2" placeholder="Leave a review"
