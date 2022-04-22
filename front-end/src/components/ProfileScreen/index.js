@@ -151,26 +151,32 @@ const ProfileScreen = () => {
                 <div className="row mb-5">
                     <div className="col-4">
                         <img src={profileUser.profilePic} style={profilePicStyle} className="mb-3"/>
+                        {profileUser._id === currentUser._id &&
+                            <div>
                         <label htmlFor="formFile" className="form-label">Change profile picture</label>
                         <input className="form-control" type="file" id="formFile"/>
+                            </div>}
                     </div>
                     <div className="col-8">
                         <h2>{profileUser.firstName} {profileUser.lastName}</h2>
                         <h4>{profileUser.userType}</h4>
                     </div>
                 </div>
+                {profileUser._id === currentUser._id &&
                 <div className="row mb-4">
                     <h4>Personal Information</h4>
                     <h5>Email: {profileUser.email}</h5>
                     <h5>Date of birth: {formatDob(profileUser.dob)}</h5>
                 </div>
+                }
                 <div className="row">
                     <h4 className="col-11">About</h4>
+                    {profileUser._id === currentUser._id &&
                     <div className="col-1">
                         <button className="btn btn-secondary" id="edit-about-button"
                                 onClick={updateAbout}>Edit
                         </button>
-                    </div>
+                    </div> }
                 </div>
                 <div>
                     <p id="about-me">
