@@ -21,7 +21,7 @@ const AlbumDetailsScreen = () => {
     const {albumId} = useParams();
     const [albumDetails, setAlbumDetails] = useState({});
     const [databaseAlbumDetails, setDatabaseAlbumDetails] = useState({});
-    const [reviews, setReviews] = useState({});
+    const [reviews, setReviews] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
 
     const fetchCurrentUser = async () => {
@@ -75,15 +75,13 @@ const AlbumDetailsScreen = () => {
     }
 
     const handleReview = async () => {
-        console.log(reviewRef.current.value);
         const actualReview = await postAlbumReview(currentUser._id, albumId, {
             review: reviewRef.current.value,
             reviewerEmail: currentUser.email,
             datePosted: new Date(),
             albumId: albumId
         })
-        console.log(actualReview.data);
-        setReviews([...reviews, actualReview]);
+        setReviews([actualReview, ...reviews]);
     }
 
     const getImage = (album) => {

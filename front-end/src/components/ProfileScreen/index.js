@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import NavigationSidebar from "../NavigationSidebar";
 import {updateUser} from "../Actions/users-actions";
@@ -12,8 +12,8 @@ const api = axios.create({
 
 const ProfileScreen = () => {
     const dispatch = useDispatch();
-    const user = useSelector(state => state.user);
-
+    const {userId} = useParams();
+    const [profileUser, setProfileUser] = useState({});
     const [currentUser, setCurrentUser] = useState({});
     const navigate = useNavigate();
 
@@ -34,7 +34,20 @@ const ProfileScreen = () => {
             const databaseUser = findUserById(dispatch, currentUserId);
             setCurrentUser(response.data);
         } catch (e) {
-            navigate("/");
+            // navigate("/");
+        }
+    }
+
+    const fetchProfileUser = async () => {
+        try {
+            // todo this isnt the way we should be doing this but it works for now
+            const response = await api.get(`http://localhost:4000/api/users/${userId}`);
+            console.log(response.data);
+            const currentUserId = response.data._id;
+            const databaseUser = findUserById(dispatch, userId);
+            setProfileUser(response.data);
+        } catch (e) {
+            // navigate("/");
         }
     }
 
@@ -98,6 +111,7 @@ const ProfileScreen = () => {
     }
 
     useEffect(() => {
+        fetchProfileUser().then(user => console.log(user));
         fetchCurrentUser();
     }, [])
     return (
@@ -109,19 +123,19 @@ const ProfileScreen = () => {
             <div className="col-10 col-lg-11 col-xl-10 mt-3">
                 <div className="row mb-5">
                     <div className="col-4">
-                        <img src={currentUser.profilePic} style={profilePicStyle} className="mb-3"/>
+                        <img src={profileUser.profilePic} style={profilePicStyle} className="mb-3"/>
                         <label htmlFor="formFile" className="form-label">Change profile picture</label>
                         <input className="form-control" type="file" id="formFile"/>
                     </div>
                     <div className="col-8">
-                        <h2>{currentUser.firstName} {currentUser.lastName}</h2>
-                        <h4>{currentUser.userType}</h4>
+                        <h2>{profileUser.firstName} {profileUser.lastName}</h2>
+                        <h4>{profileUser.userType}</h4>
                     </div>
                 </div>
                 <div className="row mb-4">
                     <h4>Personal Information</h4>
-                    <h5>Email: {currentUser.email}</h5>
-                    <h5>Date of birth: {formatDob(currentUser.dob)}</h5>
+                    <h5>Email: {profileUser.email}</h5>
+                    <h5>Date of birth: {formatDob(profileUser.dob)}</h5>
                 </div>
                 <div className="row">
                     <h4 className="col-11">About</h4>
@@ -133,11 +147,11 @@ const ProfileScreen = () => {
                 </div>
                 <div>
                     <p id="about-me">
-                        {currentUser.about}
+                        {profileUser.about}
                     </p>
                 </div>
             </div>
-            {JSON.stringify(currentUser)}
+            {JSON.stringify(profileUser)}
         </div>
     );
 };
