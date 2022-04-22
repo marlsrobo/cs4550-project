@@ -1,4 +1,6 @@
 import * as albumLikesDislikesDao from "../database/album-likes-dislikes/album-likes-dislikes-dao.js";
+import {findAlbumById} from "../database/albums/albums-dao.js";
+
 
 const albumLikesDislikesController = (app) => {
     app.post('/api/albums/:albumId/likes/:userId', likeAlbum);
@@ -25,13 +27,23 @@ const dislikeAlbum = async (req, res) => {
 const findAlbumLikesByUserId = async (req, res) => {
     const userId = req.params.userId;
     const likedAlbums = await albumLikesDislikesDao.findLikedAlbumsByUserId(userId);
-    res.json(likedAlbums);
+    let actualAlbumObjects = [];
+    for (const album of likedAlbums) {
+        const actualAlbum = await findAlbumById(album.albumId);
+        actualAlbumObjects.push(actualAlbum);
+    }
+    res.json(actualAlbumObjects);
 }
 
 const findAlbumDisikesByUserId = async (req, res) => {
     const userId = req.params.userId;
     const dislikedAlbums = await albumLikesDislikesDao.findDislikedAlbumsByUserId(userId);
-    res.json(dislikedAlbums);
+    let actualAlbumObjects = [];
+    for (const album of dislikedAlbums) {
+        const actualAlbum = await findAlbumById(album.albumId);
+        actualAlbumObjects.push(actualAlbum);
+    }
+    res.json(actualAlbumObjects);
 }
 
 export default albumLikesDislikesController;
