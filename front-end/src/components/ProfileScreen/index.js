@@ -5,6 +5,7 @@ import NavigationSidebar from "../NavigationSidebar";
 import {updateUser} from "../Actions/users-actions";
 import axios from "axios";
 import {findUserById} from "../Actions/users-actions";
+import {findDislikedAlbumsByUserId, findLikedAlbumsByUserId} from "../Services/albums-service";
 
 const api = axios.create({
     withCredentials: true
@@ -15,6 +16,8 @@ const ProfileScreen = () => {
     const {userId} = useParams();
     const [profileUser, setProfileUser] = useState({});
     const [currentUser, setCurrentUser] = useState({});
+    const [userLikedAlbums, setUserLikedAlbums] = useState([]);
+    const [userDislikedAlbums, setUserDislikedAlbums] = useState([]);
     const navigate = useNavigate();
 
     const updateAboutDatabase = (newAbout) => {
@@ -38,6 +41,25 @@ const ProfileScreen = () => {
         }
     }
 
+    const getLikedAlbums = async () => {
+        try {
+            const albums = await api.get(`http://localhost:4000/api/albums/${userId}/likes`);
+            return albums.data;
+        } catch (e) {
+            console.log("getting liked albums bad");
+        }
+    }
+
+    const getDislikedAlbums = async () => {
+        try {
+            const albums = await api.get(`http://localhost:4000/api/albums/${userId}/dislikes`);
+            console.log(albums.data);
+            return albums.data;
+        } catch (e) {
+            console.log("getting disliked albums bad");
+        }
+    }
+
     const fetchProfileUser = async () => {
         try {
             // todo this isnt the way we should be doing this but it works for now
@@ -46,6 +68,9 @@ const ProfileScreen = () => {
             const currentUserId = response.data._id;
             const databaseUser = findUserById(dispatch, userId);
             setProfileUser(response.data);
+
+            getLikedAlbums().then(albums => setUserLikedAlbums(albums));
+            getDislikedAlbums().then(albums => setUserDislikedAlbums(albums));
         } catch (e) {
             // navigate("/");
         }
@@ -113,6 +138,8 @@ const ProfileScreen = () => {
     useEffect(() => {
         fetchProfileUser().then(user => console.log(user));
         fetchCurrentUser();
+        // getLikedAlbums();
+        // getDislikedAlbums();
     }, [])
     return (
         <div className="row mt-2">
@@ -149,6 +176,14 @@ const ProfileScreen = () => {
                     <p id="about-me">
                         {profileUser.about}
                     </p>
+                </div>
+                <div>
+                    <h4>Liked Albums</h4>
+                    {JSON.stringify(userLikedAlbums)}
+                </div>
+                <div>
+                    <h4>Disliked Albums</h4>
+                    {JSON.stringify(userDislikedAlbums)}
                 </div>
             </div>
             {JSON.stringify(profileUser)}
