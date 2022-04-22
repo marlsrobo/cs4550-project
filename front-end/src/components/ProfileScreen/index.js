@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import NavigationSidebar from "../NavigationSidebar";
 import {updateUser} from "../Actions/users-actions";
@@ -10,6 +10,22 @@ import {findDislikedAlbumsByUserId, findLikedAlbumsByUserId} from "../Services/a
 const api = axios.create({
     withCredentials: true
 });
+
+const formatAlbumCover = (album) => {
+    return (
+        <div className="col pb-5">
+            <Link to={`/album/details/${album.albumId}`}><img src={album.albumCover} width="180px"/></Link>
+        </div>
+    );
+}
+
+const albumGrid = (albums) => {
+    return (
+        <div className="row">
+            {albums.map(album => formatAlbumCover(album))}
+        </div>
+    );
+}
 
 const ProfileScreen = () => {
     const dispatch = useDispatch();
@@ -178,21 +194,20 @@ const ProfileScreen = () => {
                         </button>
                     </div> }
                 </div>
-                <div>
+                <div className="mb-4">
                     <p id="about-me">
                         {profileUser.about}
                     </p>
                 </div>
                 <div>
-                    <h4>Liked Albums</h4>
-                    {JSON.stringify(userLikedAlbums)}
+                    <h4 className="mb-3">Liked Albums</h4>
+                    {albumGrid(userLikedAlbums)}
                 </div>
                 <div>
-                    <h4>Disliked Albums</h4>
-                    {JSON.stringify(userDislikedAlbums)}
+                    <h4 className="mb-3">Disliked Albums</h4>
+                    {albumGrid(userDislikedAlbums)}
                 </div>
             </div>
-            {JSON.stringify(profileUser)}
         </div>
     );
 };

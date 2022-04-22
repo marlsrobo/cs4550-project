@@ -56,6 +56,7 @@ const AlbumDetailsScreen = () => {
             if (!albumInResults) {
                 const album = {
                     name: albumDetails.name,
+                    albumCover: albumDetails.images[0].url,
                     albumId: albumId
                 }
                 const response = await likeAlbum(album);
@@ -88,6 +89,7 @@ const AlbumDetailsScreen = () => {
             if (!albumInResults) {
                 const album = {
                     name: albumDetails.name,
+                    albumCover: albumDetails.images[0].url,
                     albumId: albumId
                 }
                 const response = await dislikeAlbum(album);
