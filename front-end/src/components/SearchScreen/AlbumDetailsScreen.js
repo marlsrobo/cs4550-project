@@ -79,6 +79,7 @@ const AlbumDetailsScreen = () => {
         const actualReview = await postAlbumReview(currentUser._id, albumId, {
             review: reviewRef.current.value,
             reviewerEmail: currentUser.email,
+            datePosted: new Date(),
             albumId: albumId
         })
         console.log(actualReview.data);
