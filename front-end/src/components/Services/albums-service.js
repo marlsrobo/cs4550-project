@@ -15,8 +15,18 @@ export const likeAlbum = async (album) => {
     return response.data;
 }
 
+export const addAlbumToUserLikes = async (albumId, userId) => {
+    const response = await api.post(`${ALBUMS_API}/${albumId}/likes/${userId}`);
+    return response.data;
+}
+
 export const dislikeAlbum = async (album) => {
     const response = await api.post(`${ALBUMS_API}/dislikes`, album);
+    return response.data;
+}
+
+export const addAlbumToUserDislikes = async (albumId, userId) => {
+    const response = await api.post(`${ALBUMS_API}/${albumId}/dislikes/${userId}`);
     return response.data;
 }
 

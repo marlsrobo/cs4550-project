@@ -3,6 +3,8 @@ import React, {useEffect, useRef, useState} from "react";
 import {fetchAlbumByIdFromSpotify} from "../Services/spotify-api-services";
 import NavigationSidebar from "../NavigationSidebar";
 import {
+    addAlbumToUserDislikes,
+    addAlbumToUserLikes,
     dislikeAlbum,
     findAlbumById,
     findAlbumReviewsByAlbumId,
@@ -56,6 +58,7 @@ const AlbumDetailsScreen = () => {
             const response = await likeAlbum(album);
             console.log(response);
             setDatabaseAlbumDetails(response);
+            await addAlbumToUserLikes(albumId, currentUser._id);
         } else {
             alert("You must be logged in to like an album");
         }
@@ -69,6 +72,7 @@ const AlbumDetailsScreen = () => {
             }
             const response = await dislikeAlbum(album);
             setDatabaseAlbumDetails(response);
+            await addAlbumToUserDislikes(albumId, currentUser._id);
         } else {
             alert("You must be logged in to dislike an album");
         }
@@ -81,7 +85,12 @@ const AlbumDetailsScreen = () => {
             datePosted: new Date(),
             albumId: albumId
         })
-        setReviews([actualReview, ...reviews]);
+        console.log("reviews before adding")
+        console.log(actualReview);
+        console.log(reviews);
+        setReviews(reviews => ([actualReview, ...reviews]));
+        console.log("reviews after adding")
+        console.log(reviews)
     }
 
     const getImage = (album) => {
