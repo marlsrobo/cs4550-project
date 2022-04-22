@@ -7,7 +7,7 @@ import {
     addAlbumToUserLikes,
     dislikeAlbum,
     findAlbumById,
-    findAlbumReviewsByAlbumId,
+    findAlbumReviewsByAlbumId, findDislikedAlbumsByUserId, findLikedAlbumsByUserId,
     likeAlbum,
     postAlbumReview
 } from "../Services/albums-service";
@@ -51,28 +51,52 @@ const AlbumDetailsScreen = () => {
 
     const handleLikes = async () => {
         if (JSON.stringify(currentUser) !== "{}") {
-            const album = {
-                name: albumDetails.name,
-                albumId: albumId
+            const userLikedAlbums = await findLikedAlbumsByUserId(currentUser._id);
+            let albumInResults = await isAlbumInResults(userLikedAlbums);
+            if (!albumInResults) {
+                const album = {
+                    name: albumDetails.name,
+                    albumId: albumId
+                }
+                const response = await likeAlbum(album);
+                console.log(response);
+                setDatabaseAlbumDetails(response);
+                await addAlbumToUserLikes(albumId, currentUser._id);
             }
-            const response = await likeAlbum(album);
-            console.log(response);
-            setDatabaseAlbumDetails(response);
-            await addAlbumToUserLikes(albumId, currentUser._id);
+            else {
+                console.log("cannot like the album again");
+            }
         } else {
             alert("You must be logged in to like an album");
         }
     }
 
+    const isAlbumInResults = async (results) => {
+        let foundAlbum = false;
+        results.forEach(result => {
+            if (result.albumId === albumId) {
+                foundAlbum = true;
+            }
+        })
+        return foundAlbum;
+    }
+
     const handleDislikes = async () => {
         if (JSON.stringify(currentUser) !== "{}") {
-            const album = {
-                name: albumDetails.name,
-                albumId: albumId
+            const userDislikedAlbums = await findDislikedAlbumsByUserId(currentUser._id);
+            let albumInResults = await isAlbumInResults(userDislikedAlbums);
+            if (!albumInResults) {
+                const album = {
+                    name: albumDetails.name,
+                    albumId: albumId
+                }
+                const response = await dislikeAlbum(album);
+                setDatabaseAlbumDetails(response);
+                await addAlbumToUserDislikes(albumId, currentUser._id);
             }
-            const response = await dislikeAlbum(album);
-            setDatabaseAlbumDetails(response);
-            await addAlbumToUserDislikes(albumId, currentUser._id);
+            else {
+                console.log("cannot dislike the album again");
+            }
         } else {
             alert("You must be logged in to dislike an album");
         }
