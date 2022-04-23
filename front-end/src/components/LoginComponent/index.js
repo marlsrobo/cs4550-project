@@ -19,6 +19,7 @@ const LoginComponent = () => {
 
     const profilePicStyle = {
         width: "70px",
+        height: "70px",
         objectFit: "cover",
         borderRadius: "50%"
     }
@@ -37,7 +38,7 @@ const LoginComponent = () => {
                 <div>
                     <div className="row">
                         <Link to={`/profile/${currentUser._id}`}>
-                              <img src="/images/blankProfile.png" style={profilePicStyle} className="float-start col"/>
+                              <img src={currentUser.profilePic} style={profilePicStyle} className="float-start col"/>
                         </Link>
                         <h5 className="float-end col">{currentUser.firstName}</h5>
                     </div>

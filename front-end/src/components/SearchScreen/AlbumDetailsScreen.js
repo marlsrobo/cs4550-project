@@ -191,8 +191,7 @@ const AlbumDetailsScreen = () => {
         console.log(albumDetails);
     }, []);
     return (
-        <div className="row mt-2 mb-4">
-            <h1>Album Details Screen</h1>
+        <div className="row">
             <div className="col-2 col-lg-1 col-xl-2">
                 <NavigationSidebar active="search"/>
             </div>

@@ -24,7 +24,7 @@ const SignupScreen = () => {
         if (listenerRadio.checked) {
             return "listener";
         } else {
-            return "artist";
+            return "critic";
         }
     }
 
@@ -62,8 +62,7 @@ const SignupScreen = () => {
 
     }
     return (
-        <div className="row mt-2 mb-4">
-            <h1>Signup</h1>
+        <div className="row">
             <div className="col-2 col-lg-1 col-xl-2">
                 <NavigationSidebar active="home"/>
             </div>
@@ -82,9 +81,9 @@ const SignupScreen = () => {
                         </label>
                     </div>
                     <div className="form-check">
-                        <input className="form-check-input" type="radio" id="artist" name="userType"/>
-                        <label className="form-check-label" htmlFor="artist">
-                            Artist
+                        <input className="form-check-input" type="radio" id="critic" name="userType"/>
+                        <label className="form-check-label" htmlFor="critic">
+                            Critic
                         </label>
                     </div>
                     <button onClick={handleSignup} className="btn btn-primary mt-3">Signup</button>

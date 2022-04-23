@@ -42,8 +42,7 @@ const SearchScreen = () => {
     }, [])
     return(
         <>
-            <div className="row mt-2">
-                <h1>Search Screen</h1>
+            <div className="row">
                 <div className="col-2 col-lg-1 col-xl-2">
                     <NavigationSidebar active="search"/>
                 </div>

@@ -94,15 +94,16 @@ const ProfileScreen = () => {
 
     const formatDob = (dob) => {
         try {
-            const date = new Date(dob);
-            console.log(date);
-            return date.toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'});
+            const date = new Date(dob.slice(0, 4), dob.slice(5, 7) - 1, dob.slice(8, 10)).toDateString();
+            return date.slice(4);
+            // return date.toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'});
         } catch (e) {
         }
     }
 
     const profilePicStyle = {
-        width: "200px",
+        width: "300px",
+        height: "300px",
         objectFit: "cover",
         borderRadius: "50%"
     }
@@ -147,8 +148,6 @@ const ProfileScreen = () => {
             saveAbout()
         };
         currentEditButton.parentNode.replaceChild(saveEditButton, currentEditButton);
-
-
     }
 
     useEffect(() => {
@@ -158,8 +157,7 @@ const ProfileScreen = () => {
         // getDislikedAlbums();
     }, [])
     return (
-        <div className="row mt-2">
-            <h1>Profile Screen</h1>
+        <div className="row">
             <div className="col-2 col-lg-1 col-xl-2">
                 <NavigationSidebar active="profile"/>
             </div>
@@ -169,36 +167,39 @@ const ProfileScreen = () => {
                         <img src={profileUser.profilePic} style={profilePicStyle} className="mb-3"/>
                         {profileUser._id === currentUser._id &&
                             <div>
-                        <label htmlFor="formFile" className="form-label">Change profile picture</label>
-                        <input className="form-control" type="file" id="formFile"/>
+                                <label htmlFor="formFile" className="form-label">Change profile picture</label>
+                                <input className="form-control" type="file" id="formFile"/>
                             </div>}
                     </div>
                     <div className="col-8">
                         <h2>{profileUser.firstName} {profileUser.lastName}</h2>
                         <h4>{profileUser.userType}</h4>
+                        <div className="mt-5">
+                            <div className="row">
+                                <h4 className="col-11">About</h4>
+                                {profileUser._id === currentUser._id &&
+                                    <div className="col-1">
+                                        <button className="btn btn-secondary" id="edit-about-button"
+                                                onClick={updateAbout}>Edit
+                                        </button>
+                                    </div>}
+                            </div>
+                            <div className="mb-4">
+                                <p id="about-me">
+                                    {profileUser.about}
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {profileUser._id === currentUser._id &&
-                <div className="row mb-4">
-                    <h4>Personal Information</h4>
-                    <h5>Email: {profileUser.email}</h5>
-                    <h5>Date of birth: {formatDob(profileUser.dob)}</h5>
-                </div>
+                    <div className="row mb-4">
+                        <h4>Personal Information</h4>
+                        <h6>Email: {profileUser.email}</h6>
+                        <h6>Date of birth: {formatDob(profileUser.dob)}</h6>
+                    </div>
                 }
-                <div className="row">
-                    <h4 className="col-11">About</h4>
-                    {profileUser._id === currentUser._id &&
-                    <div className="col-1">
-                        <button className="btn btn-secondary" id="edit-about-button"
-                                onClick={updateAbout}>Edit
-                        </button>
-                    </div> }
-                </div>
-                <div className="mb-4">
-                    <p id="about-me">
-                        {profileUser.about}
-                    </p>
-                </div>
+
                 <div>
                     <h4 className="mb-3">Liked Albums</h4>
                     {albumGrid(userLikedAlbums)}

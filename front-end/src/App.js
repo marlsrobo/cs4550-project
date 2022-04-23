@@ -28,7 +28,8 @@ function App() {
     return (
         <Provider store={store}>
             <BrowserRouter>
-                <div className="container" style={{"paddingBottom": "80px"}}>
+                <div className="container m-4" style={{"paddingBottom": "80px"}}>
+                    <h1>Jankify</h1>
                     <Routes>
                         <Route path="/">
                             <Route path="signup" element={<SignupScreen/>}/>

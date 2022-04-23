@@ -32,8 +32,7 @@ const HomeScreen = () => {
         fetchCurrentUser()
     }, [])
     return(
-        <div className="row mt-2">
-            <h1>Home Screen</h1>
+        <div className="row">
             {profileInfo}
             <div className="col-2 col-lg-1 col-xl-2">
                 <NavigationSidebar active="home"/>

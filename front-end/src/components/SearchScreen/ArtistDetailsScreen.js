@@ -77,9 +77,22 @@ const ArtistDetailsScreen = () => {
         getArtistDetails().then(artist => setArtistDetails(artist));
         getArtistAlbums().then(albums => setArtistAlbums(albums));
     }, []);
+
+    const followArtist = () => {
+        const currentEditButton = document.getElementById("follow-btn");
+        if (currentEditButton.textContent === "Follow") {
+            currentEditButton.textContent = "Unfollow"
+            console.log("following") // todo actually follow
+        }
+        else {
+            currentEditButton.textContent = "Follow";
+            console.log("unfollowing") // todo actually unfollow
+        }
+
+    }
+
     return (
-        <div className="row mt-2 mb-4">
-            <h1>Artist Details Screen</h1>
+        <div className="row">
             <div className="col-2 col-lg-1 col-xl-2">
                 <NavigationSidebar active="search"/>
             </div>
@@ -87,17 +100,8 @@ const ArtistDetailsScreen = () => {
                 <div className="col-12 col-lg-6 col-xxl-5">
                     {getImage(artistDetails, "400px")}
                     <br/>
-                    <button className="mt-3 me-3 btn btn-success">
-                        <i className="far fa-thumbs-up me-1 wd-14px-font wd-gray-color"/>
-                    </button>
-                    <button className="mt-3 btn btn-danger">
-                        <i className="far fa-thumbs-down me-1 wd-14px-font wd-gray-color"/>
-                    </button>
-                    <br/>
-                    <textarea className="mt-3 form-control me-2" placeholder="Leave a review"
-                              style={{"width": "400px"}}/>
-                    <button className="mt-3 mb-4 btn btn-secondary">Submit</button>
-                    <h4>Reviews</h4>
+                    <button onClick={followArtist} id="follow-btn"
+                        className="btn btn-secondary mt-4">Follow</button>
                 </div>
                 <div className="col-12 col-lg-6 col-xxl-7">
                     <div >

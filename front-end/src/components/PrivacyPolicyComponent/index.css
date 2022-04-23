@@ -11,3 +11,7 @@
 
 .fg-color-white { color: white; }
 .bg-color-dark-gray { background-color: #373737; }
+
+.top-layer {
+    z-index: 10;
+}

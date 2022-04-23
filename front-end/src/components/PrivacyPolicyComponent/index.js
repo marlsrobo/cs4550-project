@@ -9,8 +9,8 @@ const api = axios.create({
 
 const PrivacyPolicyComponent = () => {
     return (
-        <div>
-            <div className="pos-fixed dimension-landscape bg-color-dark-gray pt-3 ps-5">
+        <div className="top-layer">
+            <div className="top-layer pos-fixed dimension-landscape bg-color-dark-gray pt-3 ps-5">
                 <span className="float-start">
                 <b>Notice.</b> By using our website, you agree to our <Link to="/privacy-policy">Privacy Policy.</Link>
                     </span>
