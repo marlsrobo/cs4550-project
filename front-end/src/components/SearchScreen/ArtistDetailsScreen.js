@@ -101,11 +101,16 @@ const ArtistDetailsScreen = () => {
         console.log(foundArtist);
         if (!foundArtist) {
             console.log("adding artist");
-            console.log(artistDetails.images[0].url)
+            let artistProfilePic = "/images/blankProfile.png";
+            try {
+                artistProfilePic = artistDetails.images[0].url
+            } catch (e) {
+                artistProfilePic = "/images/blankProfile.png";
+            }
             const artistRecord = await createArtist({
                 name: artistDetails.name,
                 artistId: artistId,
-                profilePic: artistDetails.images[0].url
+                profilePic: artistProfilePic
             })
         }
         await followArtist(currentUser._id, artistId);

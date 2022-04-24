@@ -11,22 +11,6 @@ const api = axios.create({
     withCredentials: true
 });
 
-const formatAlbumCover = (album) => {
-    return (
-        <div className="col pb-5">
-            <Link to={`/album/details/${album.albumId}`}><img src={album.albumCover} width="180px"/></Link>
-        </div>
-    );
-}
-
-const albumGrid = (albums) => {
-    return (
-        <div className="row">
-            {albums.map(album => formatAlbumCover(album))}
-        </div>
-    );
-}
-
 const ProfileScreen = () => {
     const dispatch = useDispatch();
     const {userId} = useParams();
@@ -34,6 +18,7 @@ const ProfileScreen = () => {
     const [currentUser, setCurrentUser] = useState({});
     const [userLikedAlbums, setUserLikedAlbums] = useState([]);
     const [userDislikedAlbums, setUserDislikedAlbums] = useState([]);
+    const [followingArtists, setFollowingArtists] = useState([]);
     const navigate = useNavigate();
 
     const updateAboutDatabase = (newAbout) => {
@@ -76,6 +61,17 @@ const ProfileScreen = () => {
         }
     }
 
+    const getFollowingArtists = async () => {
+        try {
+            const artists = await api.get(`http://localhost:4000/api/artists/${userId}/following`);
+            console.log("artists following")
+            console.log(artists.data);
+            return artists.data;
+        } catch (e) {
+            console.log("getting following artists bad");
+        }
+    }
+
     const fetchProfileUser = async () => {
         try {
             // todo this isnt the way we should be doing this but it works for now
@@ -87,6 +83,7 @@ const ProfileScreen = () => {
 
             getLikedAlbums().then(albums => setUserLikedAlbums(albums));
             getDislikedAlbums().then(albums => setUserDislikedAlbums(albums));
+            getFollowingArtists().then(artists => setFollowingArtists(artists));
         } catch (e) {
             // navigate("/");
         }
@@ -106,6 +103,46 @@ const ProfileScreen = () => {
         height: "300px",
         objectFit: "cover",
         borderRadius: "50%"
+    }
+
+    const artistImageStyle = {
+        width: "180px",
+        height: "180px",
+        objectFit: "cover",
+        borderRadius: "50%"
+    }
+
+
+    const formatAlbumCover = (album) => {
+        return (
+            <div className="col pb-5">
+                <Link to={`/album/details/${album.albumId}`}><img src={album.albumCover} width="180px"/></Link>
+            </div>
+        );
+    }
+
+    const albumGrid = (albums) => {
+        return (
+            <div className="row">
+                {albums.map(album => formatAlbumCover(album))}
+            </div>
+        );
+    }
+
+    const formatArtist = (artist) => {
+        return (
+            <div className="col pb-5">
+                <Link to={`/artist/details/${artist.artistId}`}><img src={artist.profilePic} style={artistImageStyle}/></Link>
+            </div>
+        );
+    }
+
+    const artistsGrid = (artists) => {
+        return (
+            <div className="row">
+                {artists.map(artist => formatArtist(artist))}
+            </div>
+        );
     }
 
     const saveAbout = () => {
@@ -199,15 +236,19 @@ const ProfileScreen = () => {
                         <h6>Date of birth: {formatDob(profileUser.dob)}</h6>
                     </div>
                 }
-
                 <div>
-                    <h4 className="mb-3">Liked Albums</h4>
+                    <h4 className="mb-4">Following Artists</h4>
+                    {artistsGrid(followingArtists)}
+                </div>
+                <div>
+                    <h4 className="mb-4">Liked Albums</h4>
                     {albumGrid(userLikedAlbums)}
                 </div>
                 <div>
-                    <h4 className="mb-3">Disliked Albums</h4>
+                    <h4 className="mb-4">Disliked Albums</h4>
                     {albumGrid(userDislikedAlbums)}
                 </div>
+
             </div>
         </div>
     );
