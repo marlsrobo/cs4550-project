@@ -252,12 +252,12 @@ const ProfileScreen = () => {
                 }
                 {
                     profileUser.userType === "critic" &&
-                    <div>
+                    <div className="mb-4">
                         <h4 className="mb-4">Album Reviews</h4>
                         <AlbumReviewList reviews={albumReviews}/>
                     </div>}
                 <div>
-                    <h4 className="mb-4 mt-4">Following Artists</h4>
+                    <h4 className="mb-4">Following Artists</h4>
                     {artistsGrid(followingArtists)}
                 </div>
                 <div>
