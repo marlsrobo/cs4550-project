@@ -43,6 +43,13 @@ const ArtistDetailsScreen = () => {
         return albums.data;
     }
 
+    const artistImageStyle = {
+        width: "180px",
+        height: "180px",
+        objectFit: "cover",
+        borderRadius: "50%"
+    }
+
     const getImage = (artist, height) => {
         try {
             return <img id="artistImg" src={artist.images[0].url} className="me-3" height={height} width={height}

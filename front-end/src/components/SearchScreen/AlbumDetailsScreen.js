@@ -108,7 +108,10 @@ const AlbumDetailsScreen = () => {
         const actualReview = await postAlbumReview(currentUser._id, albumId, {
             review: reviewRef.current.value,
             reviewerEmail: currentUser.email,
+            reviewerName: currentUser.firstName + " " + currentUser.lastName,
+            reviewerId: currentUser._id,
             datePosted: new Date(),
+            albumName: albumDetails.name,
             albumId: albumId
         })
         console.log("reviews before adding")
@@ -209,11 +212,13 @@ const AlbumDetailsScreen = () => {
                         {databaseAlbumDetails ? databaseAlbumDetails.dislikes : 0}
                     </button>
                     <br/>
-                    {JSON.stringify(currentUser) !== '{}' &&
+                    {JSON.stringify(currentUser) !== '{}' && currentUser.userType === "critic" &&
+                        <div>
                         <textarea ref={reviewRef} className="mt-3 form-control me-2" placeholder="Leave a review"
-                                  style={{"width": "400px"}}/>}
-                    {JSON.stringify(currentUser) !== '{}' &&
-                        <button className="mt-3 btn btn-secondary" onClick={handleReview}>Submit</button>}
+                                  style={{"width": "400px"}}/>
+
+                        <button className="mt-3 btn btn-secondary" onClick={handleReview}>Submit</button>
+                        </div>}
                     <h4 className="mt-4">Reviews</h4>
                     <AlbumReviewList reviews={reviews}/>
                     {/*{JSON.stringify(reviews)}*/}

@@ -6,6 +6,7 @@ import {updateUser} from "../Actions/users-actions";
 import axios from "axios";
 import {findUserById} from "../Actions/users-actions";
 import {findDislikedAlbumsByUserId, findLikedAlbumsByUserId} from "../Services/albums-service";
+import AlbumReviewList from "../SearchScreen/AlbumReviewList";
 
 const api = axios.create({
     withCredentials: true
@@ -19,6 +20,7 @@ const ProfileScreen = () => {
     const [userLikedAlbums, setUserLikedAlbums] = useState([]);
     const [userDislikedAlbums, setUserDislikedAlbums] = useState([]);
     const [followingArtists, setFollowingArtists] = useState([]);
+    const [albumReviews, setAlbumReviews] = useState([]);
     const navigate = useNavigate();
 
     const updateAboutDatabase = (newAbout) => {
@@ -72,6 +74,17 @@ const ProfileScreen = () => {
         }
     }
 
+    const getAlbumReviews = async () => {
+        try {
+            const reviews = await api.get(`http://localhost:4000/api/users/${userId}/reviews`);
+            console.log("reviews left")
+            console.log(reviews.data);
+            return reviews.data;
+        } catch (e) {
+            console.log("getting reviews bad");
+        }
+    }
+
     const fetchProfileUser = async () => {
         try {
             // todo this isnt the way we should be doing this but it works for now
@@ -84,6 +97,7 @@ const ProfileScreen = () => {
             getLikedAlbums().then(albums => setUserLikedAlbums(albums));
             getDislikedAlbums().then(albums => setUserDislikedAlbums(albums));
             getFollowingArtists().then(artists => setFollowingArtists(artists));
+            getAlbumReviews().then(reviews => setAlbumReviews(reviews));
         } catch (e) {
             // navigate("/");
         }
@@ -236,8 +250,14 @@ const ProfileScreen = () => {
                         <h6>Date of birth: {formatDob(profileUser.dob)}</h6>
                     </div>
                 }
+                {
+                    profileUser.userType === "critic" &&
+                    <div>
+                        <h4 className="mb-4">Album Reviews</h4>
+                        <AlbumReviewList reviews={albumReviews}/>
+                    </div>}
                 <div>
-                    <h4 className="mb-4">Following Artists</h4>
+                    <h4 className="mb-4 mt-4">Following Artists</h4>
                     {artistsGrid(followingArtists)}
                 </div>
                 <div>

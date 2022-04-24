@@ -3,17 +3,10 @@ import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 
 const AlbumReviewItem = ({review}) => {
-    const [reviewer, setReviewer] = useState();
-    const getReviewerName = async () => {
-        return await findUserById(review.reviewer);
-    }
-    useEffect(() => {
-        getReviewerName().then(reviewer => setReviewer(reviewer));
-    }, []);
 
     const formatReviewer = () => {
         try {
-            return <Link to={`/profile/${reviewer._id}`}>{reviewer.firstName} {reviewer.lastName}</Link>;
+            return <Link to={`/profile/${review.reviewerId}`}>{review.reviewerName}</Link>;
         } catch (e) {
             console.log("reviewer name error");
         }
@@ -37,6 +30,7 @@ const AlbumReviewItem = ({review}) => {
 
     return (
       <li className="list-group-item">
+          <h5><Link to={`/album/details/${review.albumId}`}>{review.albumName}</Link></h5>
           Posted on {getDatePosted()} at {getTimePosted()}
           <br/>
           "{review.review}"

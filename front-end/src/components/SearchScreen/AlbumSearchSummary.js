@@ -35,7 +35,7 @@ const AlbumSearchSummary = (album) => {
     return(
         <li className="list-group-item pt-3 pb-3">
             {getImage(album.album)}
-            <div className="float-start">
+            <div className="float-start" >
                 <h5>{album.album.name}</h5>
                 Artists: {formatArtists(album.album.artists)}
                 <br/>

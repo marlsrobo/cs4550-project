@@ -26,7 +26,7 @@ const ArtistSearchSummary = ({artist}) => {
                         style={imageStyle}/>
         }
         catch (Exception) {
-            return <img id="artistImg" src="images/blankProfile.png" className="float-start me-3"
+            return <img id="artistImg" src="/images/blankProfile.png" className="float-start me-3"
                         style={imageStyle}/>
         }
     }
