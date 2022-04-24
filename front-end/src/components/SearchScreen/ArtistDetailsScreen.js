@@ -2,13 +2,27 @@ import {fetchArtistByIdFromSpotify, fetchAllArtistAlbumsByIdFromSpotify} from ".
 import {Link, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import NavigationSidebar from "../NavigationSidebar";
+import axios from "axios";
 
+const api = axios.create({
+    withCredentials: true
+});
 
 const ArtistDetailsScreen = () => {
 
     const {artistId} = useParams();
     const [artistDetails, setArtistDetails] = useState({});
     const [artistAlbums, setArtistAlbums] = useState({});
+    const [currentUser, setCurrentUser] = useState({});
+
+    const fetchCurrentUser = async () => {
+        try {
+            const response = await api.post('http://localhost:4000/api/profile');
+            setCurrentUser(response.data);
+        } catch (e) {
+        }
+    }
+
     const getArtistDetails = async () => {
         let details = await fetchArtistByIdFromSpotify(artistId);
         console.log(details.data);
@@ -73,23 +87,38 @@ const ArtistDetailsScreen = () => {
         }
     };
 
-    useEffect(() => {
-        getArtistDetails().then(artist => setArtistDetails(artist));
-        getArtistAlbums().then(albums => setArtistAlbums(albums));
-    }, []);
-
     const followArtist = () => {
+        console.log("following")
+    }
+
+    const unfollowArtist = () => {
+        console.log("unfollowing")
+    }
+
+    const currentUserFollowingArtist = () => {
+
+    }
+
+    const handleFollowUnfollow = () => {
         const currentEditButton = document.getElementById("follow-btn");
         if (currentEditButton.textContent === "Follow") {
             currentEditButton.textContent = "Unfollow"
-            console.log("following") // todo actually follow
+             // todo actually follow
+            followArtist();
         }
         else {
             currentEditButton.textContent = "Follow";
-            console.log("unfollowing") // todo actually unfollow
+             // todo actually unfollow
+            unfollowArtist();
         }
-
     }
+
+
+    useEffect(() => {
+        fetchCurrentUser();
+        getArtistDetails().then(artist => setArtistDetails(artist));
+        getArtistAlbums().then(albums => setArtistAlbums(albums));
+    }, []);
 
     return (
         <div className="row">
@@ -100,8 +129,9 @@ const ArtistDetailsScreen = () => {
                 <div className="col-12 col-lg-6 col-xxl-5">
                     {getImage(artistDetails, "400px")}
                     <br/>
-                    <button onClick={followArtist} id="follow-btn"
-                        className="btn btn-secondary mt-4">Follow</button>
+                    {JSON.stringify(currentUser) !== '{}' &&
+                    <button onClick={handleFollowUnfollow} id="follow-btn"
+                        className="btn btn-secondary mt-4">Follow</button> }
                 </div>
                 <div className="col-12 col-lg-6 col-xxl-7">
                     <div >
