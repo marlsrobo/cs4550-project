@@ -10,7 +10,7 @@ export const followArtist = async (userId, artistId) => {
 }
 
 export const unfollowArtist = async (userId, artistId) => {
-    artistFollowersModel.remove({user: userId, artistId: artistId})
+    return artistFollowersModel.deleteOne({user: userId, artistId: artistId})
 }
 
 export const findFollowedArtistsForUser = async (userId) => {

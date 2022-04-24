@@ -5,7 +5,7 @@ const artistsController = (app) => {
     app.post('/api/artists/:artistId', createArtist);
     app.post('/api/artists/:artistId/follow/:userId', followArtist);
     app.delete('/api/artists/:artistId/unfollow/:userId', unfollowArtist);
-    app.get('/api/artists/:userId', findFollowedArtistsForUser);
+    app.get('/api/artists/:userId/following', findFollowedArtistsForUser);
     app.get('/api/artists/:artistId', findArtistById);
 }
 
@@ -25,12 +25,8 @@ const followArtist = async (req, res) => {
 const unfollowArtist = async (req, res) => {
     const artistId = req.params.artistId;
     const userId = req.params.userId;
-    try {
-        await artistsFollowersDao.unfollowArtist(userId, artistId);
-        res.sendStatus(200);
-    } catch (e) {
-        res.sendStatus(500);
-    }
+    const status = await artistsFollowersDao.unfollowArtist(userId, artistId);
+    res.send(status);
 }
 
 const findArtistById = async (req, res) => {
