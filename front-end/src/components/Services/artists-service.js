@@ -7,6 +7,7 @@ const api = axios.create({
 
 export const findArtistById = async (artistId) => {
     const response = await api.get(`${ARTISTS_API}/${artistId}`);
+    console.log(response.data);
     return response.data;
 }
 
@@ -17,5 +18,15 @@ export const followArtist = async (userId, artistId) => {
 
 export const unfollowArtist = async (userId, artistId) => {
     const response = await api.delete(`${ARTISTS_API}/${artistId}/unfollow/${userId}`);
+    return response.status;
+}
+
+export const findFollowedArtistsForUser = async (userId) => {
+    const response = await api.get(`${ARTISTS_API}/${userId}/following`);
+    return response.data;
+}
+
+export const createArtist = async (artist) => {
+    const response = await api.post(`${ARTISTS_API}/${artist.artistId}`, artist);
     return response.data;
 }

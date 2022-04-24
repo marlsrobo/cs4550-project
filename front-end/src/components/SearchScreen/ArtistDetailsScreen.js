@@ -3,6 +3,13 @@ import {Link, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import NavigationSidebar from "../NavigationSidebar";
 import axios from "axios";
+import {
+    createArtist,
+    findArtistById,
+    findFollowedArtistsForUser,
+    followArtist,
+    unfollowArtist
+} from "../Services/artists-service";
 
 const api = axios.create({
     withCredentials: true
@@ -14,6 +21,7 @@ const ArtistDetailsScreen = () => {
     const [artistDetails, setArtistDetails] = useState({});
     const [artistAlbums, setArtistAlbums] = useState({});
     const [currentUser, setCurrentUser] = useState({});
+    const [userFollowingArtist, setUserFollowingArtist] = useState(false);
 
     const fetchCurrentUser = async () => {
         try {
@@ -87,37 +95,56 @@ const ArtistDetailsScreen = () => {
         }
     };
 
-    const followArtist = () => {
-        console.log("following")
+    const handleFollowArtist = async () => {
+        console.log("following");
+        const foundArtist = await findArtistById(artistId);
+        console.log(foundArtist);
+        if (!foundArtist) {
+            console.log("adding artist");
+            console.log(artistDetails.images[0].url)
+            const artistRecord = await createArtist({
+                name: artistDetails.name,
+                artistId: artistId,
+                profilePic: artistDetails.images[0].url
+            })
+        }
+        await followArtist(currentUser._id, artistId);
+        setUserFollowingArtist(true);
     }
 
-    const unfollowArtist = () => {
-        console.log("unfollowing")
+    const handleUnfollowArtist = async () => {
+        console.log("unfollowing");
+        const status = await unfollowArtist(currentUser._id, artistId);
+        console.log(status);
+        setUserFollowingArtist(false);
     }
 
-    const currentUserFollowingArtist = () => {
+    const currentUserFollowingArtist = async () => {
+        let user = await api.post('http://localhost:4000/api/profile');
+        user = user.data;
+        if (JSON.stringify(user) === "{}") {
 
-    }
-
-    const handleFollowUnfollow = () => {
-        const currentEditButton = document.getElementById("follow-btn");
-        if (currentEditButton.textContent === "Follow") {
-            currentEditButton.textContent = "Unfollow"
-             // todo actually follow
-            followArtist();
         }
         else {
-            currentEditButton.textContent = "Follow";
-             // todo actually unfollow
-            unfollowArtist();
+            let artistsUserFollowing = await findFollowedArtistsForUser(user._id);
+            console.log(artistsUserFollowing);
+            let followingArtist = false;
+            artistsUserFollowing.forEach(artist => {
+                if (artist.artistId === artistId) {
+                    followingArtist = true;
+                }
+            })
+            console.log(followingArtist);
+            setUserFollowingArtist(followingArtist);
+            return followingArtist;
         }
     }
-
 
     useEffect(() => {
         fetchCurrentUser();
         getArtistDetails().then(artist => setArtistDetails(artist));
         getArtistAlbums().then(albums => setArtistAlbums(albums));
+        currentUserFollowingArtist().then(following => setUserFollowingArtist(following));
     }, []);
 
     return (
@@ -129,9 +156,12 @@ const ArtistDetailsScreen = () => {
                 <div className="col-12 col-lg-6 col-xxl-5">
                     {getImage(artistDetails, "400px")}
                     <br/>
-                    {JSON.stringify(currentUser) !== '{}' &&
-                    <button onClick={handleFollowUnfollow} id="follow-btn"
+                    {JSON.stringify(currentUser) !== "{}" && !userFollowingArtist &&
+                    <button onClick={handleFollowArtist} id="follow-btn"
                         className="btn btn-secondary mt-4">Follow</button> }
+                    {JSON.stringify(currentUser) !== "{}" && userFollowingArtist &&
+                        <button onClick={handleUnfollowArtist} id="follow-btn"
+                                className="btn btn-secondary mt-4">Unfollow</button> }
                 </div>
                 <div className="col-12 col-lg-6 col-xxl-7">
                     <div >
