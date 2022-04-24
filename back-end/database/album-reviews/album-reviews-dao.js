@@ -10,4 +10,4 @@ export const findReviewsByAlbumId = (albumId) =>
     albumReviewsModel.find({albumId})
 
 export const findReviewsByUserId = (userId) =>
-    albumReviewsModel.find({reviewer: userId})
+    albumReviewsModel.find({reviewerId: userId})

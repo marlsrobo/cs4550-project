@@ -21,7 +21,9 @@ const findReviewsByAlbumId = async (req, res) => {
 }
 
 const findReviewsByUserId = async (req, res) => {
+    console.log("finding reviews for user")
     const userId = req.params.userId;
+    console.log(userId)
     const reviews = await albumReviewsDao.findReviewsByUserId(userId);
     res.json(reviews);
 }
