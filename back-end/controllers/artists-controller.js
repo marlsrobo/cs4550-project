@@ -2,17 +2,23 @@ import * as artistsFollowersDao from "../database/artist-followers/artist-follow
 import * as artistsDao from "../database/artists/artists-dao.js";
 
 const artistsController = (app) => {
+    app.post('/api/artists/:artistId', createArtist);
     app.post('/api/artists/:artistId/follow/:userId', followArtist);
-    app.post('/api/artists/:artistId/unfollow/:userId', unfollowArtist);
-    app.post('/api/artists/:userId', findFollowedArtistsForUser);
+    app.delete('/api/artists/:artistId/unfollow/:userId', unfollowArtist);
+    app.get('/api/artists/:userId', findFollowedArtistsForUser);
     app.get('/api/artists/:artistId', findArtistById);
+}
+
+const createArtist = async (req, res) => {
+    const artist = req.body;
+    const insertedArtist = await artistsDao.createArtist(artist);
+    res.json(insertedArtist);
 }
 
 const followArtist = async (req, res) => {
     const artistId = req.params.artistId;
     const userId = req.params.userId;
     const insertedFollow = await artistsFollowersDao.followArtist(userId, artistId);
-    await artistsDao.followArtist(artistId);
     res.json(insertedFollow);
 }
 
