@@ -5,6 +5,5 @@ export const createArtist = async (artist) => {
 }
 
 export const findArtistById = async (artistId) => {
-    console.log("searching for artist");
     return artistsModel.findOne({artistId: artistId});
 };

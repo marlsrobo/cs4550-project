@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 const albumReviewsSchema = mongoose.Schema({
     review: String,
     albumId: String,
+    albumName: String,
     reviewerEmail: String,
     datePosted: Date,
-    reviewer: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'UsersModel'}
+    reviewerName: String,
+    reviewerId: String
 }, {collection: 'albumReviews'})
 
 export default albumReviewsSchema;
