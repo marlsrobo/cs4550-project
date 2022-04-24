@@ -7,7 +7,7 @@ const albumLikesDislikesController = (app) => {
     app.post('/api/albums/:albumId/dislikes/:userId', dislikeAlbum);
 
     app.get('/api/albums/:userId/likes', findAlbumLikesByUserId);
-    app.get('/api/albums/:userId/dislikes', findAlbumDisikesByUserId);
+    app.get('/api/albums/:userId/dislikes', findAlbumDislikesByUserId);
 }
 
 const likeAlbum = async (req, res) => {
@@ -35,7 +35,7 @@ const findAlbumLikesByUserId = async (req, res) => {
     res.json(actualAlbumObjects);
 }
 
-const findAlbumDisikesByUserId = async (req, res) => {
+const findAlbumDislikesByUserId = async (req, res) => {
     const userId = req.params.userId;
     const dislikedAlbums = await albumLikesDislikesDao.findDislikedAlbumsByUserId(userId);
     let actualAlbumObjects = [];
