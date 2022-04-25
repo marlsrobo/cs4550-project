@@ -17,12 +17,17 @@ const SearchScreen = () => {
         }
         else if (getSelectedSearchBy() === "album") {
             return <AlbumSearchSummary album={resultObject}/>
+        } else {
+            /*return <UserSearchSummary user={resultObject}/>*/
         }
     }
 
     const search = async () => {
         const searchKey = searchRef.current.value;
         const searchType = getSelectedSearchBy();
+
+        // todo: Use our api to search for users instead of using performSeach
+        // todo: then navitage to `/search/user/${searchKey}`
         const response = await performSearch(searchKey, searchType);
         setResults(response);
         navigate(`/search/${searchType}/${searchKey}`);
@@ -30,6 +35,7 @@ const SearchScreen = () => {
 
     const getSelectedSearchBy = () => {
         var selectElement = document.querySelector('#searchByDropdown');
+        console.log(selectElement)
         return selectElement.value;
     }
 
