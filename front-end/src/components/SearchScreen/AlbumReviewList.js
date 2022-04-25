@@ -5,7 +5,7 @@ const AlbumReviewList = ({reviews}) => {
     const formatReviews = () => {
         try {
             return reviews.sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted))
-                .map(review => <AlbumReviewItem review={review}/>);
+                .map(review => <AlbumReviewItem review={review} reviewList={reviews}/>);
         } catch (e) {
 
         }

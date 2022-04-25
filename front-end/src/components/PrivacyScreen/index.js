@@ -10,11 +10,12 @@ const api = axios.create({
 const PrivacyScreen = () => {
     return (
         <div className="row mt-2">
-            <h1>Privacy Policy</h1>
             <div className="col-2 col-lg-1 col-xl-2">
-                <NavigationSidebar active="home"/>
+                <NavigationSidebar active="privacy"/>
             </div>
             <div className="col-10 col-lg-11 col-xl-10 mt-3">
+                <h2>Privacy Policy</h2>
+
                 <p>
                     This privacy policy ("policy") will help you understand how we use and
                     protect the data you provide to us when you visit and use our service.

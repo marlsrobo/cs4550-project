@@ -170,7 +170,7 @@ const ProfileScreen = () => {
 
         const currentSaveButton = document.getElementById("save-about-button");
         const editAboutButton = document.createElement('button');
-        editAboutButton.className = "btn btn-secondary";
+        editAboutButton.className = "btn btn-secondary float-end";
         editAboutButton.id = "edit-about-button";
         editAboutButton.innerHTML = "Edit";
         editAboutButton.onclick = function () {
@@ -192,7 +192,7 @@ const ProfileScreen = () => {
 
         const currentEditButton = document.getElementById("edit-about-button");
         const saveEditButton = document.createElement('button');
-        saveEditButton.className = "btn btn-primary";
+        saveEditButton.className = "btn btn-primary float-end";
         saveEditButton.id = "save-about-button";
         saveEditButton.innerHTML = "Save";
         saveEditButton.onclick = function () {
@@ -201,11 +201,19 @@ const ProfileScreen = () => {
         currentEditButton.parentNode.replaceChild(saveEditButton, currentEditButton);
     }
 
+    const handleDeleteAccount = async () => {
+        try {
+            const deleteUserReviews = await api.delete(`http://localhost:4000/api/users/${userId}/reviews`)
+            const deleteUserResponse = await api.delete(`http://localhost:4000/api/users/${userId}`);
+            const logoutResponse = await api.post('http://localhost:4000/api/signout');
+            navigate("/");
+        } catch (e) {
+        }
+    }
+
     useEffect(() => {
         fetchProfileUser().then(user => console.log(user));
         fetchCurrentUser();
-        // getLikedAlbums();
-        // getDislikedAlbums();
     }, [])
     return (
         <div className="row">
@@ -223,18 +231,24 @@ const ProfileScreen = () => {
                             </div>}
                     </div>
                     <div className="col-8">
-                        <h2>{profileUser.firstName} {profileUser.lastName}</h2>
-                        <h4>{profileUser.userType}</h4>
-                        <div className="mt-5">
-                            <div className="row">
-                                <h4 className="col-11">About</h4>
-                                {profileUser._id === currentUser._id &&
-                                    <div className="col-1">
-                                        <button className="btn btn-secondary" id="edit-about-button"
-                                                onClick={updateAbout}>Edit
-                                        </button>
-                                    </div>}
+                        <div className="row">
+                            <div className="col-9">
+                                <h2>{profileUser.firstName} {profileUser.lastName}</h2>
+                                <h4>{profileUser.userType}</h4>
                             </div>
+                            <div className="col-3">
+                                { profileUser._id === currentUser._id &&
+                                <button className="btn btn-danger float-end" onClick={handleDeleteAccount}>Delete Account</button> }
+                            </div>
+                        </div>
+                        <div className="mt-5 row">
+                                <h4 className="col-10">About</h4>
+                                <div className="col-2">
+                                {profileUser._id === currentUser._id &&
+                                        <button className="btn btn-secondary float-end" id="edit-about-button"
+                                                onClick={updateAbout}>Edit
+                                        </button>}
+                                    </div>
                             <div className="mb-4">
                                 <p id="about-me">
                                     {profileUser.about}
