@@ -7,9 +7,9 @@ export const findUserById = (id) => {
     return usersModel.findById(id)
 }
 export const findUsersByName = (name) => {
-    var name = '^'+name
-    return usersModel.find({ $or: [ { firstName: {$regex: name, $options: 'i' } },
-            { lastName: {$regex: name, $options: 'i' } } ] })
+    let searchName = '^' + name;
+    return usersModel.find({ $or: [ { firstName: {$regex: searchName, $options: 'i' } },
+            { lastName: {$regex: searchName, $options: 'i' } } ] })
 }
 
 export const findUserByEmail = (email) => {

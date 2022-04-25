@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
-const artistFollowersSchema = mongoose.Schema({
-    artistId: String,
-    user: {
+const userFollowersSchema = mongoose.Schema({
+    follower: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UsersModel'},
+    userFollowed: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'UsersModel'}
-}, {collection: 'artistFollowers'})
+}, {collection: 'userFollowers'})
 
-export default artistFollowersSchema;
+export default userFollowersSchema;

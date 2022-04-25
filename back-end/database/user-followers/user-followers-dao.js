@@ -1,18 +1,22 @@
-import artistFollowersModel from "./artist-followers-model.js";
+import userFollowersModel from "./user-followers-model.js";
 
-export const followArtist = async (userId, artistId) => {
+export const followUser = async (followerId, userFollowedId) => {
     const record = {
-        artistId: artistId,
-        user: userId
+        follower: followerId,
+        userFollowed: userFollowedId
     }
-    const actualRecord = await artistFollowersModel.create(record);
+    const actualRecord = await userFollowersModel.create(record);
     return actualRecord;
 }
 
-export const unfollowArtist = async (userId, artistId) => {
-    return artistFollowersModel.deleteOne({user: userId, artistId: artistId})
+export const unfollowUser = async (followerId, userFollowedId) => {
+    return userFollowersModel.deleteOne({follower: followerId, userFollowed: userFollowedId})
 }
 
-export const findFollowedArtistsForUser = async (userId) => {
-    return artistFollowersModel.find({user: userId});
+export const findFollowedUsersForUser = async (followerId) => {
+    return userFollowersModel.find({follower: followerId});
+}
+
+export const findFollowersForUser = async (userFollowedId) => {
+    return userFollowersModel.find({userFollowed: userFollowedId});
 }

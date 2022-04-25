@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import artistFollowersSchema from "./artist-followers-schema.js";
-const artistFollowersModel = mongoose.model(
-    'ArtistFollowersModel',
-    artistFollowersSchema
+import userFollowersSchema from "./user-followers-schema.js";
+const userFollowersModel = mongoose.model(
+    'UserFollowersModel',
+    userFollowersSchema
 )
-export default artistFollowersModel;
+export default userFollowersModel;

@@ -1,4 +1,5 @@
 import * as usersDao from "../database/users/users-dao.js";
+import * as userFollowersDao from "../database/user-followers/user-followers-dao.js";
 
 const usersController = (app) => {
     app.post('/api/signup', signup);
@@ -9,6 +10,12 @@ const usersController = (app) => {
     app.get('/api/users', findAllUsers)
     app.get('/api/users/:id', findUserById)
     app.get('/api/users/name/:name', findUsersByName)
+
+    app.post('/api/users/:follower/follow/:userFollowed', followUser)
+    app.delete('/api/users/:follower/unfollow/:userFollowed', unfollowUser)
+    app.get('/api/users/:follower/usersFollowing', findFollowedUsersForUser)
+    app.get('/api/users/:userFollowed/followers', findFollowersForUser)
+
     // app.get('/api/users/email/:email', findUserByEmail)
     // app.post('/api/users/credentials', findUserByCredentials)
     // app.post('/api/users', createUser)
@@ -104,5 +111,41 @@ const profile = async (req, res) => {
     }
 
 };
+
+const followUser = async (req, res) => {
+    const followerId = req.params.follower;
+    const userFollowedId = req.params.userFollowed;
+    const insertedFollow = await userFollowersDao.followUser(followerId, userFollowedId);
+    res.json(insertedFollow);
+}
+
+const unfollowUser = async (req, res) => {
+    const followerId = req.params.follower;
+    const userFollowedId = req.params.userFollowed;
+    const status = await userFollowersDao.unfollowUser(followerId, userFollowedId);
+    res.send(status);
+}
+
+const findFollowedUsersForUser = async (req, res) => {
+    const followerId = req.params.follower;
+    const recordsInFollowedUsers = await userFollowersDao.findFollowedUsersForUser(followerId);
+    let users = [];
+    for (const record of recordsInFollowedUsers) {
+        const user = await usersDao.findUserById(record.userFollowed);
+        users.push(user);
+    }
+    res.json(users);
+}
+
+const findFollowersForUser = async (req, res) => {
+    const userFollowedId = req.params.userFollowed;
+    const recordsInFollowersForUser = await userFollowersDao.findFollowersForUser(userFollowedId);
+    let users = [];
+    for (const record of recordsInFollowersForUser) {
+        const user = await usersDao.findUserById(record.follower);
+        users.push(user);
+    }
+    res.json(users);
+}
 
 export default usersController;
