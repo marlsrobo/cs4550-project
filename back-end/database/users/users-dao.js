@@ -6,6 +6,11 @@ export const findAllUsers = () => {
 export const findUserById = (id) => {
     return usersModel.findById(id)
 }
+export const findUsersByName = (name) => {
+    var name = '^'+name
+    return usersModel.find({ $or: [ { firstName: {$regex: name, $options: 'i' } },
+            { lastName: {$regex: name, $options: 'i' } } ] })
+}
 
 export const findUserByEmail = (email) => {
     return usersModel.findOne({email: email})

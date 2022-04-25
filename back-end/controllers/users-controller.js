@@ -8,6 +8,7 @@ const usersController = (app) => {
 
     app.get('/api/users', findAllUsers)
     app.get('/api/users/:id', findUserById)
+    app.get('/api/users/name/:name', findUsersByName)
     // app.get('/api/users/email/:email', findUserByEmail)
     // app.post('/api/users/credentials', findUserByCredentials)
     // app.post('/api/users', createUser)
@@ -24,6 +25,13 @@ const findUserById = async (req, res) => {
     const user = await usersDao.findUserById(userId)
     res.json(user)
 }
+
+const findUsersByName = async (req, res) => {
+    const userName = req.params['name']
+    const users = await usersDao.findUsersByName(userName)
+    res.json(users)
+}
+
 const findUserByEmail = async (req, res) => {
     const email = req.params.email
     const user = await usersDao.findUserByEmail(email)
