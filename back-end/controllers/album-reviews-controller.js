@@ -4,6 +4,9 @@ const albumReviewsController = (app) => {
     app.post('/api/albums/:albumId/reviews/:userId', postReview);
     app.get('/api/albums/:albumId/reviews', findReviewsByAlbumId);
     app.get('/api/users/:userId/reviews', findReviewsByUserId);
+    app.delete('/api/users/:userId/reviews', deleteReviewsByUserId);
+    app.delete('/api/reviews/:reviewId', deleteReviewsByReviewId);
+
 }
 
 const postReview = async (req, res) => {
@@ -21,11 +24,25 @@ const findReviewsByAlbumId = async (req, res) => {
 }
 
 const findReviewsByUserId = async (req, res) => {
-    console.log("finding reviews for user")
     const userId = req.params.userId;
-    console.log(userId)
     const reviews = await albumReviewsDao.findReviewsByUserId(userId);
     res.json(reviews);
+}
+
+const deleteReviewsByUserId = async (req, res) => {
+    console.log("deleting reviews for user")
+    const userId = req.params.userId;
+    console.log(userId)
+    const status = await albumReviewsDao.deleteReviewsByUserId(userId);
+    res.json(status);
+}
+
+const deleteReviewsByReviewId = async (req, res) => {
+    console.log("deleting reviews for user")
+    const reviewId = req.params.reviewId;
+    console.log(reviewId)
+    const status = await albumReviewsDao.deleteReviewsByReviewId(reviewId);
+    res.json(status);
 }
 
 export default albumReviewsController;

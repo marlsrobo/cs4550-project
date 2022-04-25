@@ -11,3 +11,11 @@ export const findReviewsByAlbumId = (albumId) =>
 
 export const findReviewsByUserId = (userId) =>
     albumReviewsModel.find({reviewerId: userId})
+
+export const deleteReviewsByUserId = (userId) => {
+    return albumReviewsModel.deleteMany({reviewerId: userId})
+}
+
+export const deleteReviewsByReviewId = (reviewId) => {
+    return albumReviewsModel.deleteOne({_id: reviewId})
+}

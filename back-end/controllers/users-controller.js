@@ -11,7 +11,7 @@ const usersController = (app) => {
     // app.get('/api/users/email/:email', findUserByEmail)
     // app.post('/api/users/credentials', findUserByCredentials)
     // app.post('/api/users', createUser)
-    // app.delete('/api/users/:id', deleteUser)
+    app.delete('/api/users/:id', deleteUser)
     app.put('/api/users/:id', updateUser)
 }
 
