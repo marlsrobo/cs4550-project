@@ -103,11 +103,8 @@ const ArtistDetailsScreen = () => {
     };
 
     const handleFollowArtist = async () => {
-        console.log("following");
         const foundArtist = await findArtistById(artistId);
-        console.log(foundArtist);
         if (!foundArtist) {
-            console.log("adding artist");
             let artistProfilePic = "/images/blankProfile.png";
             try {
                 artistProfilePic = artistDetails.images[0].url

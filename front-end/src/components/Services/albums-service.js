@@ -1,5 +1,7 @@
 import axios from 'axios';
 const ALBUMS_API = `http://localhost:4000/api/albums`;
+const USERS_API = `http://localhost:4000/api/users`;
+
 
 const api = axios.create({
     withCredentials: true
@@ -51,6 +53,6 @@ export const findAlbumReviewsByAlbumId = async (albumId) => {
 }
 
 export const findAlbumReviewsByUserId = async (userId) => {
-    const response = await api.get(`${ALBUMS_API}/${userId}/reviews`);
+    const response = await api.get(`${USERS_API}/${userId}/reviews`);
     return response.data;
 }

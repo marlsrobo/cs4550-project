@@ -4,9 +4,14 @@ import {useDispatch, useSelector} from "react-redux";
 import NavigationSidebar from "../NavigationSidebar";
 import {updateUser} from "../Actions/users-actions";
 import axios from "axios";
-import {findUserById} from "../Actions/users-actions";
-import {findDislikedAlbumsByUserId, findLikedAlbumsByUserId} from "../Services/albums-service";
+import {
+    findAlbumReviewsByUserId,
+    findDislikedAlbumsByUserId,
+    findLikedAlbumsByUserId
+} from "../Services/albums-service";
 import AlbumReviewList from "../SearchScreen/AlbumReviewList";
+import {createArtist, findArtistById, findFollowedArtistsForUser, followArtist} from "../Services/artists-service";
+import {findFollowedUsersForUser, followUser, unfollowUser, findUserById} from "../Services/users-service";
 
 const api = axios.create({
     withCredentials: true
@@ -14,13 +19,16 @@ const api = axios.create({
 
 const ProfileScreen = () => {
     const dispatch = useDispatch();
-    const {userId} = useParams();
+    const {profileUserId} = useParams();
     const [profileUser, setProfileUser] = useState({});
     const [currentUser, setCurrentUser] = useState({});
     const [userLikedAlbums, setUserLikedAlbums] = useState([]);
     const [userDislikedAlbums, setUserDislikedAlbums] = useState([]);
     const [followingArtists, setFollowingArtists] = useState([]);
+    const [followingUsers, setFollowingUsers] = useState([]);
     const [albumReviews, setAlbumReviews] = useState([]);
+    const [userFollowingProfileUser, setUserFollowingProfileUser] = useState(false);
+
     const navigate = useNavigate();
 
     const updateAboutDatabase = (newAbout) => {
@@ -46,8 +54,8 @@ const ProfileScreen = () => {
 
     const getLikedAlbums = async () => {
         try {
-            const albums = await api.get(`http://localhost:4000/api/albums/${userId}/likes`);
-            return albums.data;
+            const albums = await findLikedAlbumsByUserId(profileUserId);
+            return albums;
         } catch (e) {
             console.log("getting liked albums bad");
         }
@@ -55,9 +63,9 @@ const ProfileScreen = () => {
 
     const getDislikedAlbums = async () => {
         try {
-            const albums = await api.get(`http://localhost:4000/api/albums/${userId}/dislikes`);
-            console.log(albums.data);
-            return albums.data;
+            const albums = await findDislikedAlbumsByUserId(profileUserId);
+            console.log(albums);
+            return albums;
         } catch (e) {
             console.log("getting disliked albums bad");
         }
@@ -65,10 +73,21 @@ const ProfileScreen = () => {
 
     const getFollowingArtists = async () => {
         try {
-            const artists = await api.get(`http://localhost:4000/api/artists/${userId}/following`);
+            const artists = await findFollowedArtistsForUser(profileUserId);
             console.log("artists following")
-            console.log(artists.data);
-            return artists.data;
+            console.log(artists);
+            return artists;
+        } catch (e) {
+            console.log("getting following artists bad");
+        }
+    }
+
+    const getFollowingUsers = async () => {
+        try {
+            const users = await findFollowedUsersForUser(profileUserId);
+            console.log("users following")
+            console.log(users);
+            return users;
         } catch (e) {
             console.log("getting following artists bad");
         }
@@ -76,10 +95,11 @@ const ProfileScreen = () => {
 
     const getAlbumReviews = async () => {
         try {
-            const reviews = await api.get(`http://localhost:4000/api/users/${userId}/reviews`);
+            const reviews = await findAlbumReviewsByUserId(profileUserId);
             console.log("reviews left")
-            console.log(reviews.data);
-            return reviews.data;
+            console.log(reviews);
+            console.log(profileUserId);
+            return reviews;
         } catch (e) {
             console.log("getting reviews bad");
         }
@@ -88,16 +108,17 @@ const ProfileScreen = () => {
     const fetchProfileUser = async () => {
         try {
             // todo this isnt the way we should be doing this but it works for now
-            const response = await api.get(`http://localhost:4000/api/users/${userId}`);
-            console.log(response.data);
-            const currentUserId = response.data._id;
-            const databaseUser = findUserById(dispatch, userId);
-            setProfileUser(response.data);
+            // const response = await api.get(`http://localhost:4000/api/users/${profileUserId}`);
+            // console.log(response.data);
+            const databaseUser = await findUserById(profileUserId);
+            setProfileUser(databaseUser);
+            console.log(databaseUser);
 
             getLikedAlbums().then(albums => setUserLikedAlbums(albums));
             getDislikedAlbums().then(albums => setUserDislikedAlbums(albums));
             getFollowingArtists().then(artists => setFollowingArtists(artists));
             getAlbumReviews().then(reviews => setAlbumReviews(reviews));
+            getFollowingUsers().then(users => setFollowingUsers(users));
         } catch (e) {
             // navigate("/");
         }
@@ -151,10 +172,26 @@ const ProfileScreen = () => {
         );
     }
 
+    const formatUser = (user) => {
+        return (
+            <div className="col pb-5">
+                <Link to={`/profile/${user._id}`}><img src={user.profilePic} style={artistImageStyle}/></Link>
+            </div>
+        );
+    }
+
     const artistsGrid = (artists) => {
         return (
             <div className="row">
                 {artists.map(artist => formatArtist(artist))}
+            </div>
+        );
+    }
+
+    const usersGrid = (users) => {
+        return (
+            <div className="row">
+                {users.map(user => formatUser(user))}
             </div>
         );
     }
@@ -203,18 +240,52 @@ const ProfileScreen = () => {
 
     const handleDeleteAccount = async () => {
         try {
-            const deleteUserReviews = await api.delete(`http://localhost:4000/api/users/${userId}/reviews`)
-            const deleteUserResponse = await api.delete(`http://localhost:4000/api/users/${userId}`);
+            const deleteUserReviews = await api.delete(`http://localhost:4000/api/users/${profileUserId}/reviews`)
+            const deleteUserResponse = await api.delete(`http://localhost:4000/api/users/${profileUserId}`);
             const logoutResponse = await api.post('http://localhost:4000/api/signout');
             navigate("/");
         } catch (e) {
         }
     }
 
+    const currentUserFollowingProfileUser = async () => {
+        let currentUser = await api.post('http://localhost:4000/api/profile');
+        currentUser = currentUser.data;
+        if (JSON.stringify(currentUser) === "{}") {
+
+        }
+        else {
+            let usersCurrentUserFollowing = await findFollowedUsersForUser(currentUser._id);
+            console.log(usersCurrentUserFollowing);
+            let followingUser = false;
+            usersCurrentUserFollowing.forEach(user => {
+                if (user._id === profileUserId) {
+                    followingUser = true;
+                }
+            })
+            console.log(followingUser);
+            setUserFollowingProfileUser(followingUser);
+            return followingUser;
+        }
+    }
+
+    const handleFollowUser = async () => {
+        console.log("followww");
+        await followUser(currentUser._id, profileUserId);
+        setUserFollowingProfileUser(true);
+    }
+
+    const handleUnfollowUser = async () => {
+        console.log("unfollow");
+        await unfollowUser(currentUser._id, profileUserId);
+        setUserFollowingProfileUser(false);
+    }
+
     useEffect(() => {
         fetchProfileUser().then(user => console.log(user));
         fetchCurrentUser();
-    }, [])
+        currentUserFollowingProfileUser().then(following => setUserFollowingProfileUser(following));
+    }, [profileUserId])
     return (
         <div className="row">
             <div className="col-2 col-lg-1 col-xl-2">
@@ -238,7 +309,11 @@ const ProfileScreen = () => {
                             </div>
                             <div className="col-3">
                                 { profileUser._id === currentUser._id &&
-                                <button className="btn btn-danger float-end" onClick={handleDeleteAccount}>Delete Account</button> }
+                                    <button className="btn btn-danger float-end" onClick={handleDeleteAccount}>Delete Account</button> }
+                                { JSON.stringify(currentUser) !== "{}" && profileUser._id !== currentUser._id  && !userFollowingProfileUser &&
+                                    <button className="btn btn-secondary float-end" onClick={handleFollowUser}>Follow User</button> }
+                                { JSON.stringify(currentUser) !== "{}" && profileUser._id !== currentUser._id  && userFollowingProfileUser &&
+                                    <button className="btn btn-secondary float-end" onClick={handleUnfollowUser}>Unfollow User</button> }
                             </div>
                         </div>
                         <div className="mt-5 row">
@@ -270,6 +345,10 @@ const ProfileScreen = () => {
                         <h4 className="mb-4">Album Reviews</h4>
                         <AlbumReviewList reviews={albumReviews}/>
                     </div>}
+                <div>
+                    <h4 className="mb-4">Following Users</h4>
+                    {usersGrid(followingUsers)}
+                </div>
                 <div>
                     <h4 className="mb-4">Following Artists</h4>
                     {artistsGrid(followingArtists)}

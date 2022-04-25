@@ -35,7 +35,7 @@ function App() {
                             <Route path="signup" element={<SignupScreen/>}/>
                             <Route path="signin" element={<SigninScreen/>}/>
                             <Route index element={<HomeScreen/>}/>
-                            <Route path="profile/:userId" element={<ProfileScreen/>}/>
+                            <Route path="profile/:profileUserId" element={<ProfileScreen/>}/>
                             <Route path="login" element={<LoginScreen/>}/>
                             <Route path="search" element={<SearchScreen/>}/>
                             <Route path="search/artist/:searchString" element={<SearchScreen/>}/>
