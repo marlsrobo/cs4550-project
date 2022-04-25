@@ -150,7 +150,7 @@ const ProfileScreen = () => {
 
     const formatAlbumCover = (album) => {
         return (
-            <div className="col pb-5">
+            <div className="col-xl-2 col-md-3 col-4 pb-5 me-4">
                 <Link to={`/album/details/${album.albumId}`}><img src={album.albumCover} width="180px"/></Link>
             </div>
         );
@@ -166,16 +166,27 @@ const ProfileScreen = () => {
 
     const formatArtist = (artist) => {
         return (
-            <div className="col pb-5">
-                <Link to={`/artist/details/${artist.artistId}`}><img src={artist.profilePic} style={artistImageStyle}/></Link>
+            <div className="col-xl-2 col-md-3 col-4 pb-5 me-4">
+                <Link to={`/artist/details/${artist.artistId}`}>
+                <div className="float-start">
+                    <img src={artist.profilePic} style={artistImageStyle}/>
+                    <h5 className="pt-3 text-center">{artist.name}</h5>
+
+                </div>
+                </Link>
             </div>
         );
     }
 
     const formatUser = (user) => {
         return (
-            <div className="col pb-5">
-                <Link to={`/profile/${user._id}`}><img src={user.profilePic} style={artistImageStyle}/></Link>
+            <div className="col-xl-2 col-md-3 col-4 pb-5 me-4">
+                <Link to={`/profile/${user._id}`}>
+                    <div className="float-start">
+                        <img src={user.profilePic} style={artistImageStyle}/>
+                        <h5 className="pt-3 text-center">{user.firstName} {user.lastName}</h5>
+                    </div>
+                </Link>
             </div>
         );
     }
