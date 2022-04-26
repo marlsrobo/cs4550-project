@@ -11,7 +11,13 @@ import {
 } from "../Services/albums-service";
 import AlbumReviewList from "../SearchScreen/AlbumReviewList";
 import {createArtist, findArtistById, findFollowedArtistsForUser, followArtist} from "../Services/artists-service";
-import {findFollowedUsersForUser, followUser, unfollowUser, findUserById} from "../Services/users-service";
+import {
+    findFollowedUsersForUser,
+    followUser,
+    unfollowUser,
+    findUserById,
+    findFollowersForUser
+} from "../Services/users-service";
 
 const api = axios.create({
     withCredentials: true
@@ -26,7 +32,10 @@ const ProfileScreen = () => {
     const [userDislikedAlbums, setUserDislikedAlbums] = useState([]);
     const [followingArtists, setFollowingArtists] = useState([]);
     const [followingUsers, setFollowingUsers] = useState([]);
+    const [userFollowers, setUserFollowers] = useState([]);
     const [albumReviews, setAlbumReviews] = useState([]);
+    const [reviewListChange, setReviewListChange] = useState(false);
+
     const [userFollowingProfileUser, setUserFollowingProfileUser] = useState(false);
 
     const navigate = useNavigate();
@@ -93,12 +102,21 @@ const ProfileScreen = () => {
         }
     }
 
+    const getUserFollowers = async () => {
+        try {
+            const users = await findFollowersForUser(profileUserId);
+            console.log("users following")
+            console.log(users);
+            return users;
+        } catch (e) {
+            console.log("getting following artists bad");
+        }
+    }
+
     const getAlbumReviews = async () => {
         try {
             const reviews = await findAlbumReviewsByUserId(profileUserId);
-            console.log("reviews left")
-            console.log(reviews);
-            console.log(profileUserId);
+            console.log("album reviewd...");
             return reviews;
         } catch (e) {
             console.log("getting reviews bad");
@@ -119,6 +137,7 @@ const ProfileScreen = () => {
             getFollowingArtists().then(artists => setFollowingArtists(artists));
             getAlbumReviews().then(reviews => setAlbumReviews(reviews));
             getFollowingUsers().then(users => setFollowingUsers(users));
+            getUserFollowers().then(users => setUserFollowers(users));
         } catch (e) {
             // navigate("/");
         }
@@ -146,7 +165,6 @@ const ProfileScreen = () => {
         objectFit: "cover",
         borderRadius: "50%"
     }
-
 
     const formatAlbumCover = (album) => {
         return (
@@ -297,6 +315,9 @@ const ProfileScreen = () => {
         fetchCurrentUser();
         currentUserFollowingProfileUser().then(following => setUserFollowingProfileUser(following));
     }, [profileUserId])
+    useEffect(() => {
+        getAlbumReviews().then(reviews => setAlbumReviews(reviews));
+    }, [reviewListChange])
     return (
         <div className="row">
             <div className="col-2 col-lg-1 col-xl-2">
@@ -351,27 +372,41 @@ const ProfileScreen = () => {
                     </div>
                 }
                 {
-                    profileUser.userType === "critic" &&
+                    profileUser.userType === "critic" && albumReviews.length > 0 &&
                     <div className="mb-4">
                         <h4 className="mb-4">Album Reviews</h4>
                         <AlbumReviewList reviews={albumReviews}/>
                     </div>}
-                <div>
-                    <h4 className="mb-4">Following Users</h4>
-                    {usersGrid(followingUsers)}
-                </div>
-                <div>
-                    <h4 className="mb-4">Following Artists</h4>
-                    {artistsGrid(followingArtists)}
-                </div>
-                <div>
-                    <h4 className="mb-4">Liked Albums</h4>
-                    {albumGrid(userLikedAlbums)}
-                </div>
-                <div>
-                    <h4 className="mb-4">Disliked Albums</h4>
-                    {albumGrid(userDislikedAlbums)}
-                </div>
+                {
+                    followingUsers.length > 0 &&
+                    <div>
+                        <h4 className="mb-4">Following Users</h4>
+                        {usersGrid(followingUsers)}
+                    </div>}
+                {
+                    userFollowers.length > 0 &&
+                    <div>
+                        <h4 className="mb-4">Followers</h4>
+                        {usersGrid(userFollowers)}
+                    </div>}
+                {
+                    followingArtists.length > 0 &&
+                    <div>
+                        <h4 className="mb-4">Following Artists</h4>
+                        {artistsGrid(followingArtists)}
+                    </div>}
+                {
+                    userLikedAlbums.length > 0 &&
+                    <div>
+                        <h4 className="mb-4">Liked Albums</h4>
+                        {albumGrid(userLikedAlbums)}
+                    </div>}
+                {
+                    userDislikedAlbums.length > 0 &&
+                    <div>
+                        <h4 className="mb-4">Disliked Albums</h4>
+                        {albumGrid(userDislikedAlbums)}
+                    </div>}
 
             </div>
         </div>

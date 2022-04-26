@@ -7,7 +7,7 @@ const api = axios.create({
     withCredentials: true
 });
 
-const AlbumReviewItem = ({review, reviewList}) => {
+const HomeReviewItem = ({review, reviewList}) => {
     const [currentUser, setCurrentUser] = useState({});
 
     const formatReviewer = () => {
@@ -59,21 +59,21 @@ const AlbumReviewItem = ({review, reviewList}) => {
     }, []);
 
     return (
-      <li className="list-group-item">
-          <div>
-              { currentUser._id === review.reviewerId &&
-                  <i onClick={handleDeleteReview} className="fas fa-lg fa-window-close text-muted mt-2 float-end"/>
-              }
-              <h5 style={{"fontSize": "20px"}}><Link to={`/album/details/${review.albumId}`}>{review.albumName}</Link></h5>
-          </div>
-          <i className="text-muted">
-              Posted on {getDatePosted()} at {getTimePosted()}</i>
-          <br/>
-          "{review.review}"
-          <br/>
-          - {formatReviewer()}
-      </li>
+        <li className="list-group-item">
+            <div>
+                { currentUser._id === review.reviewerId &&
+                    <i onClick={handleDeleteReview} className="fas fa-lg fa-window-close text-muted mt-2 float-end"/>
+                }
+                <h5 style={{"fontSize": "20px"}}><Link to={`/album/details/${review.albumId}`}>{review.albumName}</Link></h5>
+            </div>
+            <i className="text-muted">
+                Posted on {getDatePosted()} at {getTimePosted()}</i>
+            <br/>
+            "{review.review}"
+            <br/>
+            - {formatReviewer()}
+        </li>
     );
 };
 
-export default AlbumReviewItem;
+export default HomeReviewItem;
