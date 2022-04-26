@@ -9,6 +9,8 @@ export const postAlbumReview = async (userId, albumId, review) => {
 export const findReviewsByAlbumId = (albumId) =>
     albumReviewsModel.find({albumId})
 
+export const findAllAlbumReviews = () => albumReviewsModel.find({});
+
 export const findReviewsByUserId = (userId) =>
     albumReviewsModel.find({reviewerId: userId})
 
