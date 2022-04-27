@@ -3,6 +3,7 @@ const albumReviewsSchema = mongoose.Schema({
     review: String,
     albumId: String,
     albumName: String,
+    albumCover: String,
     reviewerEmail: String,
     datePosted: Date,
     reviewerName: String,

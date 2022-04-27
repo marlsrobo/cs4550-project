@@ -16,11 +16,26 @@ const usersController = (app) => {
     app.get('/api/users/:follower/usersFollowing', findFollowedUsersForUser)
     app.get('/api/users/:userFollowed/followers', findFollowersForUser)
 
+    app.get('/api/users/:userId/criticsNotFollowing', findCriticsNotFollowingForUser)
+    app.get('/api/users/:userId/listenersNotFollowing', findListenersNotFollowingForUser)
+
     // app.get('/api/users/email/:email', findUserByEmail)
     // app.post('/api/users/credentials', findUserByCredentials)
     // app.post('/api/users', createUser)
     app.delete('/api/users/:id', deleteUser)
     app.put('/api/users/:id', updateUser)
+}
+
+const findCriticsNotFollowingForUser = async (req, res) => {
+    const userId = req.params.userId;
+    const criticsNotFollowing = await userFollowersDao.findCriticsNotFollowing(userId);
+    res.json(criticsNotFollowing);
+}
+
+const findListenersNotFollowingForUser = async (req, res) => {
+    const userId = req.params.userId;
+    const listenersNotFollowing = await userFollowersDao.findListenersNotFollowing(userId);
+    res.json(listenersNotFollowing);
 }
 
 const findAllUsers = async (req, res) => {

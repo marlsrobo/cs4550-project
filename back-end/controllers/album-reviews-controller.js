@@ -3,7 +3,7 @@ import * as albumReviewsDao from "../database/album-reviews/album-reviews-dao.js
 const albumReviewsController = (app) => {
     app.post('/api/albums/:albumId/reviews/:userId', postReview);
     app.get('/api/albums/:albumId/reviews', findReviewsByAlbumId);
-    app.get('/api/albums/reviews', findAlbumReviews);
+    app.get('/api/albums-reviews', findAlbumReviews);
     app.get('/api/users/:userId/reviews', findReviewsByUserId);
     app.delete('/api/users/:userId/reviews', deleteReviewsByUserId);
     app.delete('/api/reviews/:reviewId', deleteReviewsByReviewId);
