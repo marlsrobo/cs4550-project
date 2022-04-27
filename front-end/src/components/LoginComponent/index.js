@@ -36,13 +36,13 @@ const LoginComponent = () => {
         if (JSON.stringify(currentUser) !== '{}') {
             return (
                 <div>
-                    <div className="row">
-                        <Link to={`/profile/${currentUser._id}`}>
-                              <img src={currentUser.profilePic} style={profilePicStyle} className="float-start col"/>
+                    <div className="mb-2">
+                        <Link to={`/profile/${currentUser._id}`} style={{ textDecoration: 'none' }} >
+                              <img src={currentUser.profilePic} style={profilePicStyle} className=" mb-2"/>
+                            <h5>{currentUser.firstName}</h5>
+
                         </Link>
-                        <h5 className="float-end col">{currentUser.firstName}</h5>
                     </div>
-                    <br/>
                     <button onClick={logoutUser} className="btn btn-secondary mb-3">Logout</button>
                 </div>
 
@@ -62,7 +62,7 @@ const LoginComponent = () => {
         fetchCurrentUser();
     }, [])
     return (
-        <div>
+        <div className="mt-2">
             {/*{JSON.stringify(currentUser)}*/}
             {profileInfo()}
         </div>

@@ -17,8 +17,6 @@ const SearchScreen = () => {
         }
         else if (getSelectedSearchBy() === "album") {
             return <AlbumSearchSummary album={resultObject}/>
-        } else {
-            /*return <UserSearchSummary user={resultObject}/>*/
         }
     }
 
@@ -34,7 +32,7 @@ const SearchScreen = () => {
     };
 
     const getSelectedSearchBy = () => {
-        var selectElement = document.querySelector('#searchByDropdown');
+        let selectElement = document.querySelector('#searchByDropdown');
         console.log(selectElement)
         return selectElement.value;
     }
@@ -58,13 +56,12 @@ const SearchScreen = () => {
                             <select id="searchByDropdown" className="form-select" style={{"height": "40px"}}>
                                 <option value="artist" selected={location.pathname.slice(0, 14) === '/search/artist' || location.pathname === '/search'}>Artist</option>
                                 <option value="album" selected={location.pathname.slice(0, 13) === '/search/album'}>Album</option>
-                                <option value="user" selected={location.pathname.slice(0, 12) === '/search/user'}>User</option>
                             </select>
                         </div>
                         <div className="col-8">
                             <input className="form-control bg-black border-1"
                                    style={{"color": "gray"}}
-                                   placeholder="Search by artist, album, or user"
+                                   placeholder="Search by artist or album"
                                    ref={searchRef}>
                             </input>
                         </div>

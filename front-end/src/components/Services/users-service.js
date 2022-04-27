@@ -40,6 +40,26 @@ export const unfollowUser = async (followerId, userFollowedId) => {
     return response.status;
 }
 
+export const findCriticsNotFollowingForUser = async (userId, userTypeToSearch) => {
+    let allUsers = await findAllUsers();
+    allUsers = allUsers.filter(user => user.userType === userTypeToSearch);
+    console.log("all users");
+    console.log(allUsers);
+    const allUsersFollowing = await findFollowedUsersForUser(userId);
+
+    const allCriticsFollowing = allUsersFollowing.filter(user => user.userType === userTypeToSearch);
+    console.log(allCriticsFollowing);
+
+    const allCriticsFollowingIds = allCriticsFollowing.map(critic => critic._id);
+
+    let allCriticsNotFollowing = allUsers.filter(user => !allCriticsFollowingIds.includes(user._id) && user._id !== userId);
+
+    console.log(allCriticsNotFollowing);
+    return allCriticsNotFollowing;
+    // console.log(allCriticsNotFollowing);
+    // return allCriticsNotFollowing;
+}
+
 export const findFollowedUsersForUser = async (followerId) => {
     const response = await api.get(`${USERS_API}/${followerId}/usersFollowing`);
     return response.data;

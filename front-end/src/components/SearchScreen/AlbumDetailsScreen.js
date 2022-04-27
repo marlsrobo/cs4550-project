@@ -112,7 +112,8 @@ const AlbumDetailsScreen = () => {
             reviewerId: currentUser._id,
             datePosted: new Date(),
             albumName: albumDetails.name,
-            albumId: albumId
+            albumId: albumId,
+            albumCover: albumDetails.images[0].url
         })
         console.log("reviews before adding")
         console.log(actualReview);

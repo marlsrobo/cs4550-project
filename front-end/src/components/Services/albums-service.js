@@ -47,6 +47,11 @@ export const postAlbumReview = async (userId, albumId, review) => {
     return response.data;
 }
 
+export const findAllAlbumReviews = async () => {
+    const response = await api.get(`http://localhost:4000/api/albums-reviews`);
+    return response.data;
+}
+
 export const findAlbumReviewsByAlbumId = async (albumId) => {
     const response = await api.get(`${ALBUMS_API}/${albumId}/reviews`);
     return response.data;

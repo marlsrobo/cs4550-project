@@ -29,7 +29,6 @@ function App() {
         <Provider store={store}>
             <BrowserRouter>
                 <div className="container m-4" style={{"paddingBottom": "80px"}}>
-                    <h1>Jankify</h1>
                     <Routes>
                         <Route path="/">
                             <Route path="signup" element={<SignupScreen/>}/>
@@ -40,7 +39,6 @@ function App() {
                             <Route path="search" element={<SearchScreen/>}/>
                             <Route path="search/artist/:searchString" element={<SearchScreen/>}/>
                             <Route path="search/album/:searchString" element={<SearchScreen/>}/>
-                            <Route path="search/user/:searchString" element={<SearchScreen/>}/>
                             <Route path="album/details/:albumId" element={<AlbumDetailsScreen/>}/>
                             <Route path="artist/details/:artistId" element={<ArtistDetailsScreen/>}/>
                             <Route path="privacy-policy" element={<PrivacyScreen/>}/>

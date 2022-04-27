@@ -64,7 +64,8 @@ const AlbumReviewItem = ({review, reviewList}) => {
               { currentUser._id === review.reviewerId &&
                   <i onClick={handleDeleteReview} className="fas fa-lg fa-window-close text-muted mt-2 float-end"/>
               }
-              <h5 style={{"fontSize": "20px"}}><Link to={`/album/details/${review.albumId}`}>{review.albumName}</Link></h5>
+              <h5 style={{"fontSize": "20px"}}><Link to={`/album/details/${review.albumId}`}
+                                                     style={{ textDecoration: 'none' }} >{review.albumName}</Link></h5>
           </div>
           <i className="text-muted">
               Posted on {getDatePosted()} at {getTimePosted()}</i>
