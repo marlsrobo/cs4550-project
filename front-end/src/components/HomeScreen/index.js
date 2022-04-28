@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from "react";
 import NavigationSidebar from "../NavigationSidebar";
-import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import HomeReviewList from "./HomeReviewList";
 import {findAllAlbumReviews} from "../Services/albums-service";
-import {findCriticsNotFollowingForUser} from "../Services/users-service";
+import {findUsersOfTypeNotFollowingForUser} from "../Services/users-service";
 import HomeScreenFollowUserItem from "./HomeScreenFollowUserItem";
 
 const api = axios.create({
@@ -17,7 +16,6 @@ const HomeScreen = () => {
     const [criticsNotFollowing, setCriticsNotFollowing] = useState([]);
     const [listenersNotFollowing, setListenersNotFollowing] = useState([]);
 
-    const navigate = useNavigate();
     const fetchCurrentUser = async () => {
         try {
             const response = await api.post('http://localhost:4000/api/profile');
@@ -32,7 +30,7 @@ const HomeScreen = () => {
 
     const getCriticsNotFollowing = async (user) => {
         try {
-            return await findCriticsNotFollowingForUser(user._id, "critic");
+            return await findUsersOfTypeNotFollowingForUser(user._id, "critic");
         } catch (e) {
 
         }
@@ -40,7 +38,7 @@ const HomeScreen = () => {
 
     const getListenersNotFollowing = async (user) => {
         try {
-            return await findCriticsNotFollowingForUser(user._id, "listener");
+            return await findUsersOfTypeNotFollowingForUser(user._id, "listener");
         } catch (e) {
 
         }

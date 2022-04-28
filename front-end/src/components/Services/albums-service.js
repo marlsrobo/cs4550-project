@@ -17,6 +17,12 @@ export const likeAlbum = async (album) => {
     return response.data;
 }
 
+export const unlikeAlbum = async (userId, albumId) => {
+    const response = await api.put(`${ALBUMS_API}/${albumId}/unlike`);
+    await api.delete(`${ALBUMS_API}/${albumId}/likes/${userId}`)
+    return response.data;
+}
+
 export const addAlbumToUserLikes = async (albumId, userId) => {
     const response = await api.post(`${ALBUMS_API}/${albumId}/likes/${userId}`);
     return response.data;
@@ -29,6 +35,12 @@ export const findLikedAlbumsByUserId = async (userId) => {
 
 export const dislikeAlbum = async (album) => {
     const response = await api.post(`${ALBUMS_API}/dislikes`, album);
+    return response.data;
+}
+
+export const undislikeAlbum = async (userId, albumId) => {
+    const response = await api.put(`${ALBUMS_API}/${albumId}/undislike`);
+    await api.delete(`${ALBUMS_API}/${albumId}/dislikes/${userId}`)
     return response.data;
 }
 

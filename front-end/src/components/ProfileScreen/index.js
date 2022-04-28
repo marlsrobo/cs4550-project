@@ -327,11 +327,7 @@ const ProfileScreen = () => {
                 <div className="row mb-5">
                     <div className="col-4">
                         <img src={profileUser.profilePic} style={profilePicStyle} className="mb-3"/>
-                        {profileUser._id === currentUser._id &&
-                            <div>
-                                <label htmlFor="formFile" className="form-label">Change profile picture</label>
-                                <input className="form-control" type="file" id="formFile"/>
-                            </div>}
+
                     </div>
                     <div className="col-8">
                         <div className="row">

@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom";
+
 const HomeScreenFollowUserItem = ({user}) => {
     const profilePicStyle = {
         width: "60px",
@@ -9,11 +11,16 @@ const HomeScreenFollowUserItem = ({user}) => {
     return(
       <li className="list-group-item">
           <div className="row">
-              <div  className="col-4">
+              <div className="col-4">
+                  <Link to={`/profile/${user._id}`}>
                 <img src={user.profilePic} style={profilePicStyle}/>
+                  </Link>
               </div>
               <div className="col-8">
-                <h6>{user.firstName} {user.lastName}</h6>
+                  <Link to={`/profile/${user._id}`} style={{textDecoration: 'none',
+                  position: "absolute", top: "35%", left: "35%"}}>
+                <h6 style={{fontSize: "18px"}}> {user.firstName} {user.lastName}</h6>
+                  </Link>
               </div>
           </div>
 
