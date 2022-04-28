@@ -30,7 +30,6 @@ const SignupScreen = () => {
 
     const handleSignin = async () => {
         try {
-            // todo move to user-service.js
             await api.post('http://localhost:4000/api/signin',
                 {
                     email: emailRef.current.value,
@@ -43,23 +42,28 @@ const SignupScreen = () => {
     }
 
     const handleSignup = async () => {
-        try {
-            // todo move to user-service.js
-            await axios.post('http://localhost:4000/api/signup',
-                {
-                    email: emailRef.current.value,
-                    password: passwordRef.current.value,
-                    firstName: firstNameRef.current.value,
-                    lastName: lastNameRef.current.value,
-                    userType: getUserType(),
-                    dob: dobRef.current.value
-                });
-            handleSignin();
-            // navigate('/signin');
-        } catch (e) {
-            alert('user already exists');
+        if (emailRef.current.value === "" || passwordRef.current.value === ""
+            || firstNameRef.current.value === "" || lastNameRef.current.value === ""
+            || dobRef.current.value === "") {
+            alert("All fields must be filled out.");
         }
-
+        else {
+            try {
+                await axios.post('http://localhost:4000/api/signup',
+                    {
+                        email: emailRef.current.value,
+                        password: passwordRef.current.value,
+                        firstName: firstNameRef.current.value,
+                        lastName: lastNameRef.current.value,
+                        userType: getUserType(),
+                        dob: dobRef.current.value
+                    });
+                handleSignin();
+                // navigate('/signin');
+            } catch (e) {
+                alert('user already exists');
+            }
+        }
     }
     return (
         <div className="row">

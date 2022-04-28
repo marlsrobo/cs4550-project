@@ -141,18 +141,24 @@ const AlbumDetailsScreen = () => {
     }
 
     const handleReview = async () => {
-        const actualReview = postReview(dispatch, {
-            review: reviewRef.current.value,
-            reviewerEmail: currentUser.email,
-            reviewerName: currentUser.firstName + " " + currentUser.lastName,
-            reviewerId: currentUser._id,
-            datePosted: new Date(),
-            albumName: albumDetails.name,
-            albumId: albumId,
-            albumCover: albumDetails.images[0].url
-        })
-        console.log("reviews after adding")
-        console.log(reviews)
+        if (reviewRef.current.value !== "") {
+            const actualReview = postReview(dispatch, {
+                review: reviewRef.current.value,
+                reviewerEmail: currentUser.email,
+                reviewerName: currentUser.firstName + " " + currentUser.lastName,
+                reviewerId: currentUser._id,
+                datePosted: new Date(),
+                albumName: albumDetails.name,
+                albumId: albumId,
+                albumCover: albumDetails.images[0].url
+            })
+            console.log("reviews after adding")
+            console.log(reviews)
+        }
+        else {
+            alert("You cannot leave an empty review.");
+        }
+
     }
 
     const getImage = (album) => {
