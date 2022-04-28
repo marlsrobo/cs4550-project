@@ -1,11 +1,17 @@
 import AlbumReviewItem from "./AlbumReviewItem";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {findAllReviews, findReviewsByAlbumId} from "../Actions/album-reviews-actions";
 
-const AlbumReviewList = ({reviews}) => {
+const AlbumReviewList = ({albumId}) => {
+    const reviews = useSelector(state => state.reviews);
+    const dispatch = useDispatch();
+    useEffect(() => {findReviewsByAlbumId(dispatch, albumId)}, []);
 
     const formatReviews = () => {
         try {
             return reviews.sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted))
-                .map(review => <AlbumReviewItem review={review} reviewList={reviews}/>);
+                .map(review => <AlbumReviewItem review={review}/>);
         } catch (e) {
 
         }

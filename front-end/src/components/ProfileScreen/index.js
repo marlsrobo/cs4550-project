@@ -18,6 +18,7 @@ import {
     findUserById,
     findFollowersForUser
 } from "../Services/users-service";
+import ProfileReviewList from "./ProfileReviewList";
 
 const api = axios.create({
     withCredentials: true
@@ -371,7 +372,7 @@ const ProfileScreen = () => {
                     profileUser.userType === "critic" && albumReviews.length > 0 &&
                     <div className="mb-4">
                         <h4 className="mb-4">Album Reviews</h4>
-                        <AlbumReviewList reviews={albumReviews}/>
+                        <ProfileReviewList userId={profileUser._id}/>
                     </div>}
                 {
                     followingUsers.length > 0 &&

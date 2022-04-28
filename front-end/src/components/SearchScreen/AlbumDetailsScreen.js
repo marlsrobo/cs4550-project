@@ -6,24 +6,26 @@ import {
     addAlbumToUserDislikes,
     addAlbumToUserLikes,
     dislikeAlbum,
-    findAlbumById,
-    findAlbumReviewsByAlbumId, findDislikedAlbumsByUserId, findLikedAlbumsByUserId,
+    findAlbumById, findDislikedAlbumsByUserId, findLikedAlbumsByUserId,
     likeAlbum,
     postAlbumReview, undislikeAlbum, unlikeAlbum
 } from "../Services/albums-service";
 import axios from "axios";
 import AlbumReviewList from "./AlbumReviewList";
+import {findReviewsByAlbumId, postReview} from "../Actions/album-reviews-actions";
+import {useDispatch, useSelector} from "react-redux";
 
 const api = axios.create({
     withCredentials: true
 });
 
 const AlbumDetailsScreen = () => {
+    const reviews = useSelector(state => state.reviews);
+    const dispatch = useDispatch();
     const reviewRef = useRef();
     const {albumId} = useParams();
     const [albumDetails, setAlbumDetails] = useState({});
     const [databaseAlbumDetails, setDatabaseAlbumDetails] = useState({});
-    const [reviews, setReviews] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
 
     const fetchCurrentUser = async () => {
@@ -43,10 +45,6 @@ const AlbumDetailsScreen = () => {
         if (details) {
             return details;
         }
-    }
-    const findReviewsForAlbum = async () => {
-        let reviews = await findAlbumReviewsByAlbumId(albumId);
-        return reviews;
     }
 
     const handleLikes = async () => {
@@ -143,7 +141,7 @@ const AlbumDetailsScreen = () => {
     }
 
     const handleReview = async () => {
-        const actualReview = await postAlbumReview(currentUser._id, albumId, {
+        const actualReview = postReview(dispatch, {
             review: reviewRef.current.value,
             reviewerEmail: currentUser.email,
             reviewerName: currentUser.firstName + " " + currentUser.lastName,
@@ -153,10 +151,6 @@ const AlbumDetailsScreen = () => {
             albumId: albumId,
             albumCover: albumDetails.images[0].url
         })
-        console.log("reviews before adding")
-        console.log(actualReview);
-        console.log(reviews);
-        setReviews(reviews => ([actualReview, ...reviews]));
         console.log("reviews after adding")
         console.log(reviews)
     }
@@ -198,7 +192,6 @@ const AlbumDetailsScreen = () => {
 
     const formatTracks = (album) => {
         try {
-            console.log(album.tracks.items);
             return (
                 <ul className="list-group">
 
@@ -225,12 +218,10 @@ const AlbumDetailsScreen = () => {
     };
 
     useEffect(() => {
-        console.log(reviewRef);
         fetchCurrentUser();
         fetchAlbumDetailsFromAPI().then(album => setAlbumDetails(album));
         fetchAlbumDetailsFromDatabase().then(album => setDatabaseAlbumDetails(album));
-        findReviewsForAlbum().then(reviews => setReviews(reviews));
-        console.log(albumDetails);
+        findReviewsByAlbumId(dispatch, albumId);
     }, []);
     return (
         <div className="row">
@@ -259,7 +250,7 @@ const AlbumDetailsScreen = () => {
                         <button className="mt-3 btn btn-secondary" onClick={handleReview}>Submit</button>
                         </div>}
                     <h4 className="mt-4">Reviews</h4>
-                    <AlbumReviewList reviews={reviews}/>
+                    <AlbumReviewList albumId={albumId}/>
                     {/*{JSON.stringify(reviews)}*/}
                 </div>
                 <div className="col-12 col-lg-6 col-xxl-7">

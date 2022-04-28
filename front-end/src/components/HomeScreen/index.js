@@ -5,14 +5,17 @@ import HomeReviewList from "./HomeReviewList";
 import {findAllAlbumReviews} from "../Services/albums-service";
 import {findUsersOfTypeNotFollowingForUser} from "../Services/users-service";
 import HomeScreenFollowUserItem from "./HomeScreenFollowUserItem";
+import {useDispatch} from "react-redux";
+import {findAllReviews} from "../Actions/album-reviews-actions";
 
 const api = axios.create({
     withCredentials: true
 });
 
 const HomeScreen = () => {
+    const dispatch = useDispatch();
     const [currentUser, setCurrentUser] = useState({});
-    const [albumReviews, setAlbumReviews] = useState([]);
+    // const [albumReviews, setAlbumReviews] = useState([]);
     const [criticsNotFollowing, setCriticsNotFollowing] = useState([]);
     const [listenersNotFollowing, setListenersNotFollowing] = useState([]);
 
@@ -44,20 +47,20 @@ const HomeScreen = () => {
         }
     }
 
-    const getAlbumReviews = async () => {
-        try {
-            const reviews = await findAllAlbumReviews();
-            console.log("album reviewd...");
-            return reviews;
-        } catch (e) {
-            console.log("getting reviews bad");
-        }
-    }
+    // const getAlbumReviews = async () => {
+    //     try {
+    //         const reviews = findAllReviews(dispatch);
+    //         console.log("album reviewd...");
+    //         return reviews;
+    //     } catch (e) {
+    //         console.log("getting reviews bad");
+    //     }
+    // }
 
     const middleComponent = () => {
         return (
             <div>
-                <HomeReviewList reviews={albumReviews}/>
+                <HomeReviewList/>
             </div>
         );
     }
@@ -65,7 +68,7 @@ const HomeScreen = () => {
 
     useEffect(() => {
         fetchCurrentUser();
-        getAlbumReviews().then(reviews => setAlbumReviews(reviews));
+        // getAlbumReviews().then(reviews => setAlbumReviews(reviews));
     }, [])
     return (
 

@@ -13,15 +13,17 @@ import PrivacyScreen from "./components/PrivacyScreen";
 
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {Provider} from "react-redux";
-import {createStore} from "redux";
+import {createStore, combineReducers} from "redux";
 
 import SignupScreen from "./components/SignupScreen";
 import SigninScreen from "./components/SigninScreen";
 import PrivacyPolicyComponent from "./components/PrivacyPolicyComponent";
 
 import UsersReducer from "./components/Reducers/users-reducer";
+import AlbumReviewsReducer from "./components/Reducers/album-reviews-reducer";
 
-const store = createStore(UsersReducer);
+const reducers = combineReducers({reviews: AlbumReviewsReducer, users: UsersReducer});
+const store = createStore(reducers);
 
 
 function App() {

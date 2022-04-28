@@ -2,12 +2,15 @@ import {findUserById} from "../Services/users-service";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import axios from "axios";
+import {useDispatch} from "react-redux";
+import {deleteReview} from "../Actions/album-reviews-actions";
 
 const api = axios.create({
     withCredentials: true
 });
 
-const AlbumReviewItem = ({review, reviewList}) => {
+const AlbumReviewItem = ({review}) => {
+    const dispatch = useDispatch();
     const [currentUser, setCurrentUser] = useState({});
 
     const formatReviewer = () => {
@@ -37,7 +40,7 @@ const AlbumReviewItem = ({review, reviewList}) => {
     const handleDeleteReview = async () => {
         if (JSON.stringify(currentUser) !== "{}") {
             if (currentUser._id === review.reviewerId) {
-                const deleteUserReviews = await api.delete(`http://localhost:4000/api/reviews/${review._id}`)
+                deleteReview(dispatch, review);
             }
         }
     }

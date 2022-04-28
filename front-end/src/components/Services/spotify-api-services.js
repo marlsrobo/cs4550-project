@@ -30,7 +30,7 @@ export const performSearch = async (query, qType) => {
     //request token using getAuth() function
     const access_token = await getAuth();
 
-    const api_url = `https://api.spotify.com/v1/search?type=${qType}&q=${query}`;
+    const api_url = `https://api.spotify.com/v1/search?type=${qType}&q=${query}&limit=50`;
     console.log(api_url);
     try{
         const response = await axios.get(api_url, {
