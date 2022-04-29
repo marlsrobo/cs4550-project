@@ -71,7 +71,6 @@ const HomeScreen = () => {
         // getAlbumReviews().then(reviews => setAlbumReviews(reviews));
     }, [])
     return (
-
         <div className="row">
             <div className="col-2 col-lg-1 col-xl-2">
                 <NavigationSidebar active="home"/>

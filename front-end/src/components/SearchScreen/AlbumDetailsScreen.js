@@ -136,7 +136,7 @@ const AlbumDetailsScreen = () => {
                 }
             }
         } else {
-            alert("You must be logged in to like an album");
+            alert("You must be logged in to dislike an album");
         }
     }
 

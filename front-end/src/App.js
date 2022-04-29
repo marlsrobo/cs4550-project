@@ -30,7 +30,7 @@ function App() {
     return (
         <Provider store={store}>
             <BrowserRouter>
-                <div className="container m-4" style={{"paddingBottom": "80px"}}>
+                <div className="m-4" style={{"paddingBottom": "80px"}}>
                     <Routes>
                         <Route path="/">
                             <Route path="signup" element={<SignupScreen/>}/>
