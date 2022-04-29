@@ -16,10 +16,10 @@ const HomeScreenFollowUserItem = ({user}) => {
                 <img src={user.profilePic} style={profilePicStyle}/>
                   </Link>
               </div>
-              <div className="col-8">
+              <div className="col-8 ">
                   <Link to={`/profile/${user._id}`} style={{textDecoration: 'none',
                   position: "absolute", top: "35%", left: "35%"}}>
-                <h6 style={{fontSize: "18px"}}> {user.firstName} {user.lastName}</h6>
+                    <h6 className="d-none d-xl-block" style={{fontSize: "18px"}}> {user.firstName} {user.lastName}</h6>
                   </Link>
               </div>
           </div>
